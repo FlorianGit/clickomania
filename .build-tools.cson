@@ -7,7 +7,7 @@ providers: [
           project: "/home/florian/Programmeren/HackerRank/Clickomania"
           source: "/home/florian/Programmeren/HackerRank/Clickomania/.build-tools.cson"
           name: "compile"
-          command: "g++ clickomania.cpp -o clickomania"
+          command: "g++ -std=c++11 clickomania.cpp -o clickomania"
           wd: "."
           env: {}
           modifier:

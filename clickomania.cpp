@@ -1,28 +1,37 @@
 #include <stdio.h>
 #include <cstdlib>
+#include <fstream>
+#include <string>
 
-class Grid {
+using namespace std;
+
+class Gridclass {
    int num_rows;
    int num_cols;
    int num_colors;
-   int** grid;
+   char** grid;
 
-   Grid(int num_rows, int num_cols, int num_colors, int**grid);
-   ~Grid( void );
+   public:
+      Gridclass(int num_rows, int num_cols, int num_colors);
+      ~Gridclass( void );
+      void setGridValue(int col_index, int row_index, char value)
+      {
+         grid[row_index][col_index] = value;
+      }
 };
 
-Grid::Grid(int num_r, int num_c, int num_clrs, int** grd)
+Gridclass::Gridclass(int num_r, int num_c, int num_clrs)
 {
    num_rows = num_r;
    num_cols = num_c;
    num_colors = num_clrs;
-   grd = (int**)malloc(num_cols * sizeof(int*));
+   grid = (char**)malloc(num_cols * sizeof(char*));
    for (int col_index = 0; col_index < num_cols; col_index++){
-      grd[col_index] = (int*)malloc(num_rows * sizeof(int));
+      grid[col_index] = (char*)malloc(num_rows * sizeof(char));
    }
 }
 
-Grid::~Grid(void)
+Gridclass::~Gridclass(void)
 {
    for(int col_index = 0; col_index < num_cols; col_index++){
       free(grid[col_index]);
@@ -30,18 +39,33 @@ Grid::~Grid(void)
    free(grid);
 }
 
-/*Grid readGridFromFile(char* file_name)
+Gridclass readGridFromFile(string file_name)
 {
-   size_t len = 0;
-   char *line = NULL;
+   ifstream gridfile;
+   int x,y,k;
+   char temp;
 
-   FILE* fp = fopen(file_name, "r");
-   getline(&line, &len, fp);
+   gridfile.open(file_name);
+   gridfile >> x >> y >> k;
+   Gridclass grid = Gridclass(x, y, k);
+   for (int row_index; row_index < x; row_index++)
+   {
+      for(int col_index; col_index < y; col_index++)
+      {
+         gridfile >> temp;
+         grid.setGridValue(row_index, col_index, temp);
+      }
+   }
 
-}*/
+   gridfile.close();
+
+   return grid;
+}
 
 int main (void)
 {
    printf("Hello world 3\n");
+   Gridclass grid = readGridFromFile("ex1.grd");
+   printf("Hoi");
    return 0;
 }
