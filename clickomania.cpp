@@ -44,27 +44,27 @@ public:
       return row_index;
    }
 
-   Coor getUpNb(Coor c)
+   Coor getUpNb(void)
    {
-      Coor nb = Coor(c.getRowIndex() -1, c.getColIndex());
+      Coor nb = Coor(row_index -1, col_index);
       return nb;
    };
 
-   Coor getDownNb(Coor c)
+   Coor getDownNb(void)
    {
-      Coor nb = Coor(c.getRowIndex() + 1, c.getColIndex());
+      Coor nb = Coor(row_index + 1, col_index);
       return nb;
    };
 
-   Coor getLeftNb(Coor c)
+   Coor getLeftNb(void)
    {
-      Coor nb = Coor(c.getRowIndex(), c.getColIndex() - 1);
+      Coor nb = Coor(row_index, col_index - 1);
       return nb;
    };
 
-   Coor getRightNb(Coor c)
+   Coor getRightNb(void)
    {
-      Coor nb = Coor(c.getRowIndex(), c.getColIndex() + 1);
+      Coor nb = Coor(row_index, col_index + 1);
       return nb;
    };
 };
@@ -131,16 +131,70 @@ class Gridclass {
       }
    }
 
-   int getGroupSize(Gridclass grid, Coor start_search)
+   int calculateGroupSize(Coor start_search)
    {
       stack<Coor> to_be_checked;
-      Gridclass visited = Gridclass(grid.getNumRows(), grid.getNumCols(), grid.getNumColors());
+      Coor current, next;
+      Gridclass visited = Gridclass(getNumRows(), getNumCols(), getNumColors());
       int group_size = 1;
-      char group_color = grid.getGridValue(start_search);
+      char group_color = getGridValue(start_search);
 
       to_be_checked.push(start_search);
-      visited.setGridValue(start_search, 'y');
 
+      while(!to_be_checked.empty())
+      {
+         current = to_be_checked.top();
+         to_be_checked.pop();
+         visited.setGridValue(current, 'y');
+         if (current.getRowIndex() > 0)
+         {
+            next = current.getUpNb();
+            if (getGridValue(next) == group_color
+               && visited.getGridValue(next) != 'y')
+            {
+               to_be_checked.push(next);
+               visited.setGridValue(next, 'y');
+               group_size++;
+            }
+         }
+
+         if (current.getRowIndex() < getNumRows() -1)
+         {
+            next = current.getDownNb();
+            if (getGridValue(next) == group_color
+               && visited.getGridValue(next) != 'y')
+            {
+               to_be_checked.push(next);
+               visited.setGridValue(next, 'y');
+               group_size++;
+            }
+         }
+
+         if (current.getColIndex() > 0 )
+         {
+            next = current.getLeftNb();
+            if (getGridValue(next) == group_color
+               && visited.getGridValue(next) != 'y')
+            {
+               to_be_checked.push(next);
+               visited.setGridValue(next, 'y');
+               group_size++;
+            }
+         }
+
+         if (current.getColIndex() < getNumCols() -1)
+         {
+            next = current.getRightNb();
+            if (getGridValue(next) == group_color
+               && visited.getGridValue(next) != 'y')
+            {
+               to_be_checked.push(next);
+               visited.setGridValue(next, 'y');
+               group_size++;
+            }
+         }
+      }
+      return group_size;
    }
 };
 
@@ -178,5 +232,6 @@ int main (void)
 {
    Gridclass grid = readGridFromFile("ex1.grd");
    grid.printGrid();
+   cout << grid.calculateGroupSize(Coor(0,2));
    return 0;
 }
