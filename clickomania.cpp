@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -14,9 +15,41 @@ class Gridclass {
    public:
       Gridclass(int num_rows, int num_cols, int num_colors);
       ~Gridclass( void );
-      void setGridValue(int col_index, int row_index, char value)
+      void setGridValue(int row_index, int col_index, char value)
       {
-         grid[row_index][col_index] = value;
+         grid[col_index][row_index] = value;
+      };
+
+      int getGridValue(int row_index, int col_index)
+      {
+         return grid[col_index][row_index];
+      }
+
+      int getNumRows( void)
+      {
+         return num_rows;
+      }
+
+      int getNumCols(void)
+      {
+         return num_cols;
+      }
+
+      int getNumColors(void)
+      {
+         return num_colors;
+      }
+
+      void printGrid(void)
+      {
+         for (int row_index = 0; row_index < num_rows; row_index++)
+         {
+            for (int col_index = 0; col_index < num_cols; col_index++)
+            {
+               cout << grid[col_index][row_index];
+            }
+            cout << "\n";
+         }
       }
 };
 
@@ -45,12 +78,14 @@ Gridclass readGridFromFile(string file_name)
    int x,y,k;
    char temp;
 
-   gridfile.open(file_name);
-   gridfile >> x >> y >> k;
+   gridfile.open(file_name, ifstream::in);
+   gridfile >> x;
+   gridfile >> y;
+   gridfile >> k;
    Gridclass grid = Gridclass(x, y, k);
-   for (int row_index; row_index < x; row_index++)
+   for (int row_index = 0; row_index < x; row_index++)
    {
-      for(int col_index; col_index < y; col_index++)
+      for(int col_index = 0; col_index < y; col_index++)
       {
          gridfile >> temp;
          grid.setGridValue(row_index, col_index, temp);
@@ -64,8 +99,7 @@ Gridclass readGridFromFile(string file_name)
 
 int main (void)
 {
-   printf("Hello world 3\n");
    Gridclass grid = readGridFromFile("ex1.grd");
-   printf("Hoi");
+   grid.printGrid();
    return 0;
 }
