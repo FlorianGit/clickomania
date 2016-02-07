@@ -82,8 +82,13 @@ class Gridclass {
       num_cols = num_c;
       num_colors = num_clrs;
       grid = (char**)malloc(num_cols * sizeof(char*));
-      for (int col_index = 0; col_index < num_cols; col_index++){
+      for (int col_index = 0; col_index < num_cols; col_index++)
+      {
          grid[col_index] = (char*)malloc(num_rows * sizeof(char));
+         for (int row_index = 0; row_index < num_rows; row_index++)
+         {
+            grid[col_index][row_index] = '\0';
+         }
       }
    }
 
@@ -231,7 +236,5 @@ Gridclass readGridFromFile(string file_name)
 int main (void)
 {
    Gridclass grid = readGridFromFile("ex1.grd");
-   grid.printGrid();
-   cout << grid.calculateGroupSize(Coor(0,2));
    return 0;
 }
