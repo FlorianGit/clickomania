@@ -76,76 +76,75 @@ class Gridclass {
    char** grid;
 
    public:
-      Gridclass(int num_rows, int num_cols, int num_colors);
-      ~Gridclass( void );
-      void setGridValue(Coor c, char value)
-      {
-         grid[c.getColIndex()][c.getRowIndex()] = value;
-      };
-
-      int getGridValue(Coor c)
-      {
-         return grid[c.getColIndex()][c.getRowIndex()];
+   Gridclass(int num_r, int num_c, int num_clrs)
+   {
+      num_rows = num_r;
+      num_cols = num_c;
+      num_colors = num_clrs;
+      grid = (char**)malloc(num_cols * sizeof(char*));
+      for (int col_index = 0; col_index < num_cols; col_index++){
+         grid[col_index] = (char*)malloc(num_rows * sizeof(char));
       }
+   }
 
-      int getNumRows( void)
-      {
-         return num_rows;
+   ~Gridclass(void)
+   {
+      for(int col_index = 0; col_index < num_cols; col_index++){
+         free(grid[col_index]);
       }
+      free(grid);
+   }
+   void setGridValue(Coor c, char value)
+   {
+      grid[c.getColIndex()][c.getRowIndex()] = value;
+   };
 
-      int getNumCols(void)
-      {
-         return num_cols;
-      }
+   int getGridValue(Coor c)
+   {
+      return grid[c.getColIndex()][c.getRowIndex()];
+   }
 
-      int getNumColors(void)
-      {
-         return num_colors;
-      }
+   int getNumRows( void)
+   {
+      return num_rows;
+   }
 
-      void printGrid(void)
+   int getNumCols(void)
+   {
+      return num_cols;
+   }
+
+   int getNumColors(void)
+   {
+      return num_colors;
+   }
+
+   void printGrid(void)
+   {
+      for (int row_index = 0; row_index < num_rows; row_index++)
       {
-         for (int row_index = 0; row_index < num_rows; row_index++)
+         for (int col_index = 0; col_index < num_cols; col_index++)
          {
-            for (int col_index = 0; col_index < num_cols; col_index++)
-            {
-               cout << grid[col_index][row_index];
-            }
-            cout << "\n";
+            cout << grid[col_index][row_index];
          }
+         cout << "\n";
       }
+   }
 
-      int getGroupSize(Gridclass grid, Coor start_search)
-      {
-         stack<Coor> to_be_checked;
-         Gridclass visited = Gridclass(grid.getNumRows(), grid.getNumCols(), grid.getNumColors());
-         int group_size = 1;
-         char group_color = grid.getGridValue(start_search);
+   int getGroupSize(Gridclass grid, Coor start_search)
+   {
+      stack<Coor> to_be_checked;
+      Gridclass visited = Gridclass(grid.getNumRows(), grid.getNumCols(), grid.getNumColors());
+      int group_size = 1;
+      char group_color = grid.getGridValue(start_search);
 
-         to_be_checked.push(start_search);
-         visited.setGridValue(start_search, 'y');
+      to_be_checked.push(start_search);
+      visited.setGridValue(start_search, 'y');
 
-      }
+   }
 };
 
-Gridclass::Gridclass(int num_r, int num_c, int num_clrs)
-{
-   num_rows = num_r;
-   num_cols = num_c;
-   num_colors = num_clrs;
-   grid = (char**)malloc(num_cols * sizeof(char*));
-   for (int col_index = 0; col_index < num_cols; col_index++){
-      grid[col_index] = (char*)malloc(num_rows * sizeof(char));
-   }
-}
 
-Gridclass::~Gridclass(void)
-{
-   for(int col_index = 0; col_index < num_cols; col_index++){
-      free(grid[col_index]);
-   }
-   free(grid);
-}
 
 Gridclass readGridFromFile(string file_name)
 {
