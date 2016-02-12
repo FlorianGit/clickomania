@@ -1,4 +1,4 @@
-#include "coorclass.h"
+#include "Coor.h"
 
 Coor::Coor()
 {

@@ -1,5 +1,5 @@
-#include "coorclass.h"
-#include "gridclass.h"
+#include "Coor.h"
+#include "Grid.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <fstream>
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Gridclass::Gridclass(int num_r, int num_c, int num_clrs)
+Grid::Grid(int num_r, int num_c, int num_clrs)
 {
    num_rows = num_r;
    num_cols = num_c;
@@ -25,7 +25,7 @@ Gridclass::Gridclass(int num_r, int num_c, int num_clrs)
    }
 }
 
-Gridclass::~Gridclass(void)
+Grid::~Grid(void)
 {
    for(int col_index = 0; col_index < num_cols; col_index++){
       free(grid[col_index]);
@@ -33,7 +33,7 @@ Gridclass::~Gridclass(void)
    free(grid);
 }
 
-void Gridclass::printGrid(void)
+void Grid::printGrid(void)
 {
    for (int row_index = 0; row_index < num_rows; row_index++)
    {
@@ -45,11 +45,11 @@ void Gridclass::printGrid(void)
    }
 }
 
-int Gridclass::calculateGroupSize(Coor start_search)
+int Grid::calculateGroupSize(Coor start_search)
 {
    stack<Coor> to_be_checked;
    Coor current, next;
-   Gridclass visited = Gridclass(getNumRows(), getNumCols(), getNumColors());
+   Grid visited = Grid(getNumRows(), getNumCols(), getNumColors());
    int group_size = 1;
    char group_color = getGridValue(start_search);
 

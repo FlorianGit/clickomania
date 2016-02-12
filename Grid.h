@@ -1,9 +1,9 @@
 #ifndef __GRIDCLASS_INCLUDED__
 #define __GRIDCLASS_INCLUDED__
 
-#include "coorclass.h"
+#include "Coor.h"
 
-class Gridclass {
+class Grid {
 private:
    int num_rows;
    int num_cols;
@@ -12,8 +12,8 @@ private:
 
 public:
    //Constructors
-   Gridclass(int num_r, int num_c, int num_clrs);
-   ~Gridclass(void);
+   Grid(int num_r, int num_c, int num_clrs);
+   ~Grid(void);
 
    //get and set functions
    void setGridValue(Coor c, char value) { grid[c.getColIndex()][c.getRowIndex()] = value; }

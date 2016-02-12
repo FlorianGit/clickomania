@@ -3,12 +3,12 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include "coorclass.h"
-#include "gridclass.h"
+#include "Coor.h"
+#include "Grid.h"
 
 using namespace std;
 
-Gridclass readGridFromFile(string file_name)
+Grid readGridFromFile(string file_name)
 {
    ifstream gridfile;
    int x,y,k;
@@ -19,7 +19,7 @@ Gridclass readGridFromFile(string file_name)
    gridfile >> x;
    gridfile >> y;
    gridfile >> k;
-   Gridclass grid = Gridclass(x, y, k);
+   Grid grid = Grid(x, y, k);
    for (int row_index = 0; row_index < x; row_index++)
    {
       for(int col_index = 0; col_index < y; col_index++)
@@ -38,7 +38,7 @@ Gridclass readGridFromFile(string file_name)
 
 int main (void)
 {
-   Gridclass grid = readGridFromFile("ex1.grd");
+   Grid grid = readGridFromFile("ex1.grd");
    grid.printGrid();
    printf("test2");
    return 0;
