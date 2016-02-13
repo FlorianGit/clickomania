@@ -25,7 +25,7 @@ Grid readGridFromFile(string fileName)
       for(int Colindex = 0; Colindex < numCols; Colindex++)
       {
          gridFile >> temp;
-         grid.setGridValue(Coor(rowIndex,Colindex), temp);
+         grid.setValue(Coor(rowIndex,Colindex), temp);
       }
    }
 

@@ -80,7 +80,7 @@ Group Grid::calculateGroup(Coor searchStart)
    Grid visited = Grid(getNumRows(), getNumCols(), getNumColors());
    Group group;
    group.size = 1;
-   group.color = getGridValue(searchStart);
+   group.color = getValue(searchStart);
 
    toBeChecked.push(searchStart);
    group.coors.push_back(searchStart);
@@ -89,16 +89,16 @@ Group Grid::calculateGroup(Coor searchStart)
    {
       current = toBeChecked.top();
       toBeChecked.pop();
-      visited.setGridValue(current, 'y');
+      visited.setValue(current, 'y');
       for (int dirIndex = 0; dirIndex < 4; dirIndex++)
       {
          next = findNeighbour(current, directions[dirIndex]);
-         if (getGridValue(next) == group.color
-            && visited.getGridValue(next) != 'y')
+         if (getValue(next) == group.color
+            && visited.getValue(next) != 'y')
          {
             toBeChecked.push(next);
             group.coors.push_back(next);
-            visited.setGridValue(next, 'y');
+            visited.setValue(next, 'y');
             group.size++;
          }
       }

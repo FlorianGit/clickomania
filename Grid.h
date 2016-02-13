@@ -11,8 +11,8 @@ public:
    ~Grid(void);
 
    //get and set functions
-   void setGridValue(Coor c, char value) { grid_[c.getColIndex()][c.getRowIndex()] = value; }
-   int getGridValue(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()]; }
+   void setValue(Coor c, char value) { grid_[c.getColIndex()][c.getRowIndex()] = value; }
+   int getValue(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()]; }
    int getNumRows(void) { return numRows_; }
    int getNumCols(void) { return numCols_; }
    int getNumColors(void) { return numColors_; }
