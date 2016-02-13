@@ -9,6 +9,7 @@
 #include "Coor.h"
 #include "Grid.h"
 #include "Group.h"
+#include "helper.h"
 
 using namespace std;
 
@@ -164,5 +165,28 @@ void Grid::setVector(Coor start, Coor direction, vector <Block> vec)
    {
       setBlock(start, vec[i]);
       start = start + direction;
+   }
+}
+
+void Grid::collapseDown()
+{
+   for ( int i = 0; i < getNumCols(); i++)
+   {
+      setVector(Coor(getNumRows()-1,i), UP, vectorMove(getVector(Coor(getNumRows()-1,i),UP)));
+   }
+}
+
+void Grid::removeGroup(int groupNumber)
+{
+   for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
+   {
+      for (int colIndex = 0; colIndex < getNumCols(); colIndex++)
+      {
+         if (getGroupNumber(Coor(rowIndex,colIndex)) == groupNumber)
+         {
+            setValue(Coor(rowIndex,colIndex), '\0');
+            setGroupNumber(Coor(rowIndex,colIndex), -1);
+         }
+      }
    }
 }

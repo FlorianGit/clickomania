@@ -40,6 +40,10 @@ int main (void)
 {
    Grid grid = readGridFromFile("ex1.grd");
    grid.calculateGroups();
-   printBlockVector(grid.getVector(Coor(10,0),DOWN));
+   grid.printGrid();
+   grid.removeGroup(10);
+   grid.printGrid();
+   grid.collapseDown();
+   grid.printGrid();
    return 0;
 }

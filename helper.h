@@ -4,5 +4,5 @@
 
 using namespace std;
 
-vector <char> vectorMove(vector <char> orig, int length);
+vector <Block> vectorMove(vector <Block> orig);
 void printBlockVector(vector <Block> v);

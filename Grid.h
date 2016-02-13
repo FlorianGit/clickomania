@@ -32,7 +32,8 @@ public:
    void calculateGroups();
    vector <Block> getVector(Coor start, Coor direction);
    void setVector(Coor start, Coor direction, vector <Block> vec);
-
+   void collapseDown();
+   void removeGroup(int groupNumber);
 
 private:
    int numRows_;

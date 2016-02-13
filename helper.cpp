@@ -2,16 +2,17 @@
 
 #include "helper.h"
 
-vector <char> vectorMove(vector <char> orig, int length)
+vector <Block> vectorMove(vector <Block> orig)
 {
-   vector <char> newArray = {};
+   int length = orig.size();
+   vector <Block> newArray = {};
    for (int i = 0; i < length; i++)
    {
-      if (orig[i] != '\0')
+      if (orig[i].color != '\0')
          newArray.push_back(orig[i]);
    }
    for (int i =newArray.size(); i < length; i++)
-      newArray.push_back('\0');
+      newArray.push_back(EMPTY_BLOCK);
    return newArray;
 }
 
