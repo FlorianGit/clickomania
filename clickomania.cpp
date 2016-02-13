@@ -3,9 +3,11 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "Coor.h"
 #include "Grid.h"
+#include "helper.h"
 
 using namespace std;
 
@@ -38,6 +40,6 @@ int main (void)
 {
    Grid grid = readGridFromFile("ex1.grd");
    grid.calculateGroups();
-   grid.printGrid();
+   printBlockVector(grid.getVector(Coor(10,0),DOWN));
    return 0;
 }

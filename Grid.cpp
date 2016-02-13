@@ -145,3 +145,24 @@ void Grid::calculateGroups()
       }
    }
 }
+
+vector <Block> Grid::getVector(Coor start, Coor direction)
+{
+   vector <Block> ret = {};
+
+   while( isValidCoor(start) )
+   {
+      ret.push_back(getBlock(start));
+      start = start + direction;
+   }
+   return ret;
+}
+
+void Grid::setVector(Coor start, Coor direction, vector <Block> vec)
+{
+   for (int i = 0; i < vec.size(); i++)
+   {
+      setBlock(start, vec[i]);
+      start = start + direction;
+   }
+}

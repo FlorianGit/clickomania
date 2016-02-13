@@ -18,7 +18,8 @@ public:
    bool getVisited(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()].visited; }
    void setGroupNumber(Coor c, int group) { grid_[c.getColIndex()][c.getRowIndex()].groupNumber = group; }
    int getGroupNumber(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()].groupNumber; }
-
+   void setBlock(Coor c, Block b) { grid_[c.getColIndex()][c.getRowIndex()] = b; }
+   Block getBlock(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()]; }
    int getNumRows(void) { return numRows_; }
    int getNumCols(void) { return numCols_; }
    int getNumColors(void) { return numColors_; }
@@ -29,6 +30,9 @@ public:
    Coor findNeighbour(Coor current, Coor direction);
    Group calculateGroup(Coor start_search);
    void calculateGroups();
+   vector <Block> getVector(Coor start, Coor direction);
+   void setVector(Coor start, Coor direction, vector <Block> vec);
+
 
 private:
    int numRows_;
