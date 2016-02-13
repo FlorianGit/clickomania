@@ -3,6 +3,7 @@
 
 #include "Coor.h"
 #include "Group.h"
+#include "Block.h"
 
 class Grid {
 public:
@@ -11,12 +12,17 @@ public:
    ~Grid(void);
 
    //get and set functions
-   void setValue(Coor c, char value) { grid_[c.getColIndex()][c.getRowIndex()] = value; }
-   int getValue(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()]; }
+   void setValue(Coor c, char value) { grid_[c.getColIndex()][c.getRowIndex()].color = value; }
+   char getValue(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()].color; }
+   void setVisited(Coor c, bool visited) { grid_[c.getColIndex()][c.getRowIndex()].visited = visited; }
+   bool getVisited(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()].visited; }
+   void setGroupNumber(Coor c, int group) { grid_[c.getColIndex()][c.getRowIndex()].groupNumber = group; }
+   int getGroupNumber(Coor c) { return grid_[c.getColIndex()][c.getRowIndex()].groupNumber; }
+
    int getNumRows(void) { return numRows_; }
    int getNumCols(void) { return numCols_; }
    int getNumColors(void) { return numColors_; }
-
+   int getNumGroups(void) { return numGroups_; }
    //other functions
    void printGrid(void);
    bool isValidCoor(Coor coor);
@@ -27,8 +33,8 @@ private:
    int numRows_;
    int numCols_;
    int numColors_;
-   char** grid_;
-
+   Block** grid_;
+   int numGroups_;
 };
 
 

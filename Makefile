@@ -9,4 +9,4 @@ Coor.o : Coor.cpp
 	$(CXX) -std=c++11 -c Coor.cpp Coor.h
 
 Grid.o : Grid.cpp
-	$(CXX) -std=c++11 -c Grid.cpp Grid.h Group.h Coor.h
+	$(CXX) -std=c++11 -c Grid.cpp Grid.h Group.h Coor.h Block.h

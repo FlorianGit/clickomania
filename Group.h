@@ -11,6 +11,7 @@ public:
    vector <Coor> coors;
    int size;
    char color;
+   int number;
 
 };
 
