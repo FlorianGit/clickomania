@@ -1,4 +1,7 @@
 #include "Coor.h"
+#include <iostream>
+
+using namespace std;
 
 Coor::Coor()
 {
@@ -35,3 +38,9 @@ Coor Coor::getRightNb(void)
    Coor nb = Coor(row_index, col_index + 1);
    return nb;
 };
+
+ostream &operator<<(ostream &output, const Coor &coor)
+{
+   output << coor.row_index << " " << coor.col_index << "\n";
+   return output;
+}

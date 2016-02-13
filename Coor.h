@@ -1,6 +1,9 @@
 #ifndef  __COORCLASS_INCLUDED__
 #define  __COORCLASS_INCLUDED__
 
+#include <iostream>
+using namespace std;
+
 class Coor {
 private:
    int row_index;
@@ -19,6 +22,7 @@ public:
    Coor getDownNb(void);
    Coor getLeftNb(void);
    Coor getRightNb(void);
+   friend ostream &operator<<(ostream &output, const Coor &coor);
 };
 
 #endif

@@ -42,7 +42,7 @@ int main (void)
    vector <Coor> coors = grid.calculateGroup(Coor(0,0)).coors;
    while (coors.size() > 0)
    {
-      cout << coors.back().getRowIndex() << " " << coors.back().getColIndex() << "\n";
+      cout << coors.back();
       coors.pop_back();
    }
    return 0;
