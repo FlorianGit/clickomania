@@ -28,6 +28,7 @@ public:
    bool isValidCoor(Coor coor);
    Coor findNeighbour(Coor current, Coor direction);
    Group calculateGroup(Coor start_search);
+   void calculateGroups();
 
 private:
    int numRows_;

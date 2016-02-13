@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <stack>
+#include <iomanip>
 
 #include "Coor.h"
 #include "Grid.h"
@@ -66,7 +67,7 @@ void Grid::printGrid(void)
    {
       for (int colIndex = 0; colIndex < numCols_; colIndex++)
       {
-         cout << getGroupNumber(Coor(rowIndex, colIndex));
+         cout << setw(3) << getGroupNumber(Coor(rowIndex, colIndex));
       }
       cout << "\n";
    }
@@ -106,6 +107,7 @@ Group Grid::calculateGroup(Coor searchStart)
    group.size = 1;
    group.color = getValue(searchStart);
    group.number = getNumGroups();
+   numGroups_++;
    toBeChecked.push(searchStart);
    group.coors.push_back(searchStart);
    setGroupNumber(searchStart, group.number);
@@ -130,4 +132,16 @@ Group Grid::calculateGroup(Coor searchStart)
       }
    }
    return group;
+}
+
+void Grid::calculateGroups()
+{
+   for( int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+   {
+      for (int colIndex = 0; colIndex < numCols_; colIndex++)
+      {
+         if (getVisited(Coor(rowIndex, colIndex)) == false)
+            calculateGroup(Coor(rowIndex, colIndex));
+      }
+   }
 }
