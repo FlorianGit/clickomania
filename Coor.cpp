@@ -5,42 +5,42 @@ using namespace std;
 
 Coor::Coor()
 {
-   row_index = 0;
-   col_index = 0;
+   rowIndex_ = 0;
+   colIndex_ = 0;
 }
 
-Coor::Coor(int r_index, int c_index)
+Coor::Coor(int rowIndex, int colIndex)
 {
-   row_index = r_index;
-   col_index = c_index;
+   rowIndex_ = rowIndex;
+   colIndex_ = colIndex;
 }
 
 Coor Coor::getUpNb(void)
 {
-   Coor nb = Coor(row_index -1, col_index);
+   Coor nb = Coor(rowIndex_ -1, colIndex_);
    return nb;
 };
 
 Coor Coor::getDownNb(void)
 {
-   Coor nb = Coor(row_index + 1, col_index);
+   Coor nb = Coor(rowIndex_ + 1, colIndex_);
    return nb;
 };
 
 Coor Coor::getLeftNb(void)
 {
-   Coor nb = Coor(row_index, col_index - 1);
+   Coor nb = Coor(rowIndex_, colIndex_ - 1);
    return nb;
 };
 
 Coor Coor::getRightNb(void)
 {
-   Coor nb = Coor(row_index, col_index + 1);
+   Coor nb = Coor(rowIndex_, colIndex_ + 1);
    return nb;
 };
 
 ostream &operator<<(ostream &output, const Coor &coor)
 {
-   output << coor.row_index << " " << coor.col_index << "\n";
+   output << coor.rowIndex_ << " " << coor.colIndex_ << "\n";
    return output;
 }

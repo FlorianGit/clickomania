@@ -5,24 +5,25 @@
 using namespace std;
 
 class Coor {
-private:
-   int row_index;
-   int col_index;
-
 public:
    Coor();
-   Coor(int r_index, int c_index);
+   Coor(int rowIndex, int colIndex);
 
-   void setColIndex(int c_index) { col_index = c_index; }
-   void setRowIndex(int r_index) { row_index = r_index; }
-   int getColIndex() { return col_index; }
-   int getRowIndex() { return row_index; }
+   void setColIndex(int colIndex) { colIndex_ = colIndex; }
+   void setRowIndex(int rowIndex) { rowIndex_ = rowIndex; }
+   int getColIndex() { return colIndex_; }
+   int getRowIndex() { return rowIndex_; }
 
    Coor getUpNb(void);
    Coor getDownNb(void);
    Coor getLeftNb(void);
    Coor getRightNb(void);
    friend ostream &operator<<(ostream &output, const Coor &coor);
+
+private:
+   int rowIndex_;
+   int colIndex_;
+
 };
 
 #endif

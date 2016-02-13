@@ -1,67 +1,68 @@
-#include "Coor.h"
-#include "Grid.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <fstream>
 #include <string>
 #include <iostream>
 #include <stack>
+
+#include "Coor.h"
+#include "Grid.h"
 #include "Group.h"
 
 using namespace std;
 
-Grid::Grid(int num_r, int num_c, int num_clrs)
+Grid::Grid(int numRows, int numCols, int numColors)
 {
-   num_rows = num_r;
-   num_cols = num_c;
-   num_colors = num_clrs;
-   grid = (char**)malloc(num_cols * sizeof(char*));
-   for (int col_index = 0; col_index < num_cols; col_index++)
+   numRows_ = numRows;
+   numCols_ = numCols;
+   numColors_ = numColors;
+   grid_ = (char**)malloc(numCols_ * sizeof(char*));
+   for (int colIndex = 0; colIndex < numCols_; colIndex++)
    {
-      grid[col_index] = (char*)malloc(num_rows * sizeof(char));
-      for (int row_index = 0; row_index < num_rows; row_index++)
+      grid_[colIndex] = (char*)malloc(numRows_ * sizeof(char));
+      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
-         grid[col_index][row_index] = '\0';
+         grid_[colIndex][rowIndex] = '\0';
       }
    }
 }
 
 Grid::~Grid(void)
 {
-   for(int col_index = 0; col_index < num_cols; col_index++){
-      free(grid[col_index]);
+   for(int colIndex = 0; colIndex < numCols_; colIndex++){
+      free(grid_[colIndex]);
    }
-   free(grid);
+   free(grid_);
 }
 
 void Grid::printGrid(void)
 {
-   for (int row_index = 0; row_index < num_rows; row_index++)
+   for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
    {
-      for (int col_index = 0; col_index < num_cols; col_index++)
+      for (int colIndex = 0; colIndex < numCols_; colIndex++)
       {
-         cout << grid[col_index][row_index];
+         cout << grid_[colIndex][rowIndex];
       }
       cout << "\n";
    }
 }
 
-Group Grid::calculateGroup(Coor start_search)
+Group Grid::calculateGroup(Coor searchStart)
 {
-   stack<Coor> to_be_checked;
+   stack<Coor> toBeChecked;
    Coor current, next;
    Grid visited = Grid(getNumRows(), getNumCols(), getNumColors());
    Group group;
    group.size = 1;
-   group.color = getGridValue(start_search);
+   group.color = getGridValue(searchStart);
 
-   to_be_checked.push(start_search);
-   group.coors.push_back(start_search);
+   toBeChecked.push(searchStart);
+   group.coors.push_back(searchStart);
 
-   while(!to_be_checked.empty())
+   while(!toBeChecked.empty())
    {
-      current = to_be_checked.top();
-      to_be_checked.pop();
+      current = toBeChecked.top();
+      toBeChecked.pop();
       visited.setGridValue(current, 'y');
       if (current.getRowIndex() > 0)
       {
@@ -69,7 +70,7 @@ Group Grid::calculateGroup(Coor start_search)
          if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
-            to_be_checked.push(next);
+            toBeChecked.push(next);
             group.coors.push_back(next);
             visited.setGridValue(next, 'y');
             group.size++;
@@ -82,7 +83,7 @@ Group Grid::calculateGroup(Coor start_search)
          if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
-            to_be_checked.push(next);
+            toBeChecked.push(next);
             group.coors.push_back(next);
             visited.setGridValue(next, 'y');
             group.size++;
@@ -95,7 +96,7 @@ Group Grid::calculateGroup(Coor start_search)
          if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
-            to_be_checked.push(next);
+            toBeChecked.push(next);
             group.coors.push_back(next);
             visited.setGridValue(next, 'y');
             group.size++;
@@ -108,7 +109,7 @@ Group Grid::calculateGroup(Coor start_search)
          if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
-            to_be_checked.push(next);
+            toBeChecked.push(next);
             group.coors.push_back(next);
             visited.setGridValue(next, 'y');
             group.size++;

@@ -3,35 +3,33 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+
 #include "Coor.h"
 #include "Grid.h"
 
 using namespace std;
 
-Grid readGridFromFile(string file_name)
+Grid readGridFromFile(string fileName)
 {
-   ifstream gridfile;
-   int x,y,k;
-   Coor c;
+   ifstream gridFile;
+   int numRows, numCols, numColors;
    char temp;
 
-   gridfile.open(file_name, ifstream::in);
-   gridfile >> x;
-   gridfile >> y;
-   gridfile >> k;
-   Grid grid = Grid(x, y, k);
-   for (int row_index = 0; row_index < x; row_index++)
+   gridFile.open(fileName, ifstream::in);
+   gridFile >> numRows;
+   gridFile >> numCols;
+   gridFile >> numColors;
+   Grid grid = Grid(numRows, numCols, numColors);
+   for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
    {
-      for(int col_index = 0; col_index < y; col_index++)
+      for(int Colindex = 0; Colindex < numCols; Colindex++)
       {
-         gridfile >> temp;
-         c.setRowIndex(row_index);
-         c.setColIndex(col_index);
-         grid.setGridValue(c, temp);
+         gridFile >> temp;
+         grid.setGridValue(Coor(rowIndex,Colindex), temp);
       }
    }
 
-   gridfile.close();
+   gridFile.close();
 
    return grid;
 }
