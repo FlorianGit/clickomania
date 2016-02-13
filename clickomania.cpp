@@ -43,5 +43,13 @@ int main (void)
       cout << coors.back();
       coors.pop_back();
    }
+   cout << Coor(2,2) + Coor(1,2);
+
+   cout << grid.findNeighbour(Coor(3,4),UP);
+   cout << grid.findNeighbour(Coor(3,4),DOWN);
+   cout << grid.findNeighbour(Coor(3,4),LEFT);
+   cout << grid.findNeighbour(Coor(3,4),RIGHT);
+   cout << grid.findNeighbour(Coor(0,0),UP);
+   cout << grid.findNeighbour(Coor(0,grid.getNumCols()-1), RIGHT);
    return 0;
 }

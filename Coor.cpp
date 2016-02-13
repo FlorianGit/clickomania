@@ -9,6 +9,12 @@ Coor::Coor()
    colIndex_ = 0;
 }
 
+Coor Coor::operator+(const Coor& c)
+{
+   Coor ret = Coor(this->rowIndex_ + c.rowIndex_, this->colIndex_ + c.colIndex_);
+   return ret;
+}
+
 Coor::Coor(int rowIndex, int colIndex)
 {
    rowIndex_ = rowIndex;

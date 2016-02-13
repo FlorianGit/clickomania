@@ -19,11 +19,17 @@ public:
    Coor getLeftNb(void);
    Coor getRightNb(void);
    friend ostream &operator<<(ostream &output, const Coor &coor);
+   Coor operator+(const Coor& c);
 
 private:
    int rowIndex_;
    int colIndex_;
 
 };
+
+#define UP    Coor(-1,0)
+#define DOWN  Coor(1,0)
+#define LEFT  Coor(0,-1)
+#define RIGHT Coor(0,1)
 
 #endif

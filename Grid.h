@@ -19,6 +19,8 @@ public:
 
    //other functions
    void printGrid(void);
+   bool isValidCoor(Coor coor);
+   Coor findNeighbour(Coor current, Coor direction);
    Group calculateGroup(Coor start_search);
 
 private:

@@ -47,6 +47,32 @@ void Grid::printGrid(void)
    }
 }
 
+bool Grid::isValidCoor(Coor coor)
+{
+   int r = coor.getRowIndex(), c = coor.getColIndex();
+   bool ret = false;
+
+   if (r < 0 || c <0)
+      goto exit;
+
+   if (r >= getNumRows() || c >= getNumCols())
+      goto exit;
+
+   ret = true;
+exit:
+   return ret;
+}
+
+
+Coor Grid::findNeighbour(Coor current, Coor direction)
+{
+   if (isValidCoor(current + direction))
+      return current + direction;
+   else
+      return current;
+}
+
+
 Group Grid::calculateGroup(Coor searchStart)
 {
    stack<Coor> toBeChecked;
@@ -58,54 +84,15 @@ Group Grid::calculateGroup(Coor searchStart)
 
    toBeChecked.push(searchStart);
    group.coors.push_back(searchStart);
-
+   Coor directions[4] = {UP, DOWN, LEFT, RIGHT};
    while(!toBeChecked.empty())
    {
       current = toBeChecked.top();
       toBeChecked.pop();
       visited.setGridValue(current, 'y');
-      if (current.getRowIndex() > 0)
+      for (int dirIndex = 0; dirIndex < 4; dirIndex++)
       {
-         next = current.getUpNb();
-         if (getGridValue(next) == group.color
-            && visited.getGridValue(next) != 'y')
-         {
-            toBeChecked.push(next);
-            group.coors.push_back(next);
-            visited.setGridValue(next, 'y');
-            group.size++;
-         }
-      }
-
-      if (current.getRowIndex() < getNumRows() -1)
-      {
-         next = current.getDownNb();
-         if (getGridValue(next) == group.color
-            && visited.getGridValue(next) != 'y')
-         {
-            toBeChecked.push(next);
-            group.coors.push_back(next);
-            visited.setGridValue(next, 'y');
-            group.size++;
-         }
-      }
-
-      if (current.getColIndex() > 0 )
-      {
-         next = current.getLeftNb();
-         if (getGridValue(next) == group.color
-            && visited.getGridValue(next) != 'y')
-         {
-            toBeChecked.push(next);
-            group.coors.push_back(next);
-            visited.setGridValue(next, 'y');
-            group.size++;
-         }
-      }
-
-      if (current.getColIndex() < getNumCols() -1)
-      {
-         next = current.getRightNb();
+         next = findNeighbour(current, directions[dirIndex]);
          if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
