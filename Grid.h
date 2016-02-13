@@ -2,6 +2,7 @@
 #define __GRIDCLASS_INCLUDED__
 
 #include "Coor.h"
+#include "Group.h"
 
 class Grid {
 private:
@@ -24,7 +25,7 @@ public:
 
    //other functions
    void printGrid(void);
-   int calculateGroupSize(Coor start_search);
+   Group calculateGroup(Coor start_search);
 };
 
 

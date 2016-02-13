@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <stack>
+#include "Group.h"
 
 using namespace std;
 
@@ -45,15 +46,17 @@ void Grid::printGrid(void)
    }
 }
 
-int Grid::calculateGroupSize(Coor start_search)
+Group Grid::calculateGroup(Coor start_search)
 {
    stack<Coor> to_be_checked;
    Coor current, next;
    Grid visited = Grid(getNumRows(), getNumCols(), getNumColors());
-   int group_size = 1;
-   char group_color = getGridValue(start_search);
+   Group group;
+   group.size = 1;
+   group.color = getGridValue(start_search);
 
    to_be_checked.push(start_search);
+   group.coors.push_back(start_search);
 
    while(!to_be_checked.empty())
    {
@@ -63,50 +66,54 @@ int Grid::calculateGroupSize(Coor start_search)
       if (current.getRowIndex() > 0)
       {
          next = current.getUpNb();
-         if (getGridValue(next) == group_color
+         if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
             to_be_checked.push(next);
+            group.coors.push_back(next);
             visited.setGridValue(next, 'y');
-            group_size++;
+            group.size++;
          }
       }
 
       if (current.getRowIndex() < getNumRows() -1)
       {
          next = current.getDownNb();
-         if (getGridValue(next) == group_color
+         if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
             to_be_checked.push(next);
+            group.coors.push_back(next);
             visited.setGridValue(next, 'y');
-            group_size++;
+            group.size++;
          }
       }
 
       if (current.getColIndex() > 0 )
       {
          next = current.getLeftNb();
-         if (getGridValue(next) == group_color
+         if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
             to_be_checked.push(next);
+            group.coors.push_back(next);
             visited.setGridValue(next, 'y');
-            group_size++;
+            group.size++;
          }
       }
 
       if (current.getColIndex() < getNumCols() -1)
       {
          next = current.getRightNb();
-         if (getGridValue(next) == group_color
+         if (getGridValue(next) == group.color
             && visited.getGridValue(next) != 'y')
          {
             to_be_checked.push(next);
+            group.coors.push_back(next);
             visited.setGridValue(next, 'y');
-            group_size++;
+            group.size++;
          }
       }
    }
-   return group_size;
+   return group;
 }

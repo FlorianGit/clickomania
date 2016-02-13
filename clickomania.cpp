@@ -39,7 +39,11 @@ Grid readGridFromFile(string file_name)
 int main (void)
 {
    Grid grid = readGridFromFile("ex1.grd");
-   grid.printGrid();
-   printf("test2");
+   vector <Coor> coors = grid.calculateGroup(Coor(0,0)).coors;
+   while (coors.size() > 0)
+   {
+      cout << coors.back().getRowIndex() << " " << coors.back().getColIndex() << "\n";
+      coors.pop_back();
+   }
    return 0;
 }

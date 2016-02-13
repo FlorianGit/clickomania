@@ -1,12 +1,12 @@
 CXX = g++
 
-objects = coorclass.o gridclass.o
+objects = Coor.o Grid.o Group.o
 
 clickomania : $(objects)
 	$(CXX) -std=c++11 clickomania.cpp $(objects)
 
-coorclass.o : coorclass.h
-	$(CXX) -c coorclass.cpp gridclass.cpp
+Coor.o : Coor.cpp
+	$(CXX) -c Coor.cpp Coor.h
 
-gridclass.o : gridclass.h
-	$(CXX) -c gridclass.cpp
+Grid.o : Grid.cpp
+	$(CXX) -c Grid.cpp Grid.h Group.h Coor.h
