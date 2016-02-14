@@ -38,12 +38,14 @@ Grid readGridFromFile(string fileName)
 
 int main (void)
 {
-   Grid grid = readGridFromFile("ex1.grd");
+   Grid grid = readGridFromFile("ex2.grd");
    grid.calculateGroups();
    grid.printGrid();
-   grid.removeGroup(10);
+   grid.removeGroup(1);
    grid.printGrid();
    grid.collapseDown();
+   grid.printGrid();
+   grid.collapseLeft();
    grid.printGrid();
    return 0;
 }

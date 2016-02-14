@@ -25,7 +25,7 @@ Grid::Grid(int numRows, int numCols, int numColors)
       grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
       for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
-         setValue(Coor(rowIndex,colIndex), '\0');
+         setValue(Coor(rowIndex,colIndex), ' ');
          setVisited(Coor(rowIndex,colIndex), false);
          setGroupNumber(Coor(rowIndex,colIndex), -1);
       }
@@ -176,6 +176,54 @@ void Grid::collapseDown()
    }
 }
 
+bool Grid::isEmptyCol(int colIndex)
+{
+   bool ret = true;
+
+   for ( int i = 0; i < getNumRows(); i++)
+   {
+      if (getValue(Coor(i, colIndex)) != ' ')
+      {
+         ret = false;
+         break;
+      }
+   }
+   return ret;
+}
+
+void Grid::emptyCol(int colIndex)
+{
+   for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
+   {
+      setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
+   }
+}
+
+void Grid::collapseLeft()
+{
+   int i = 0, j;
+
+   while (i < getNumCols())
+   {
+      if (isEmptyCol(i) == true)
+      {
+         j = i + 1;
+         while (j < getNumCols())
+         {
+            if (isEmptyCol(j) == true)
+               j++;
+            else
+            {
+               setVector(Coor(0, i), DOWN, getVector(Coor(0, j), DOWN));
+               emptyCol(j);
+               j = getNumCols();
+            }
+         }
+      }
+      i++;
+   }
+}
+
 void Grid::removeGroup(int groupNumber)
 {
    for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
@@ -184,7 +232,7 @@ void Grid::removeGroup(int groupNumber)
       {
          if (getGroupNumber(Coor(rowIndex,colIndex)) == groupNumber)
          {
-            setValue(Coor(rowIndex,colIndex), '\0');
+            setValue(Coor(rowIndex,colIndex), ' ');
             setGroupNumber(Coor(rowIndex,colIndex), -1);
          }
       }

@@ -9,5 +9,5 @@ public:
    bool visited;
 };
 
-#define EMPTY_BLOCK {'\0', -1, false}
+#define EMPTY_BLOCK {' ', -1, false}
 #endif

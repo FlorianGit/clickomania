@@ -33,6 +33,9 @@ public:
    vector <Block> getVector(Coor start, Coor direction);
    void setVector(Coor start, Coor direction, vector <Block> vec);
    void collapseDown();
+   bool isEmptyCol(int colIndex);
+   void emptyCol(int colIndex);
+   void collapseLeft();
    void removeGroup(int groupNumber);
 
 private:
