@@ -26,19 +26,7 @@ public:
    int getNumGroups(void) { return numGroups_; }
    //other functions
    void printGrid(void);
-   bool isValidCoor(Coor coor);
-   Coor findNeighbour(Coor current, Coor direction);
-   void resetVisited(void);
-   void resetGroups(void);
-   Group calculateGroup(Coor start_search);
    void calculateGroups();
-   vector <Block> getVector(Coor start, Coor direction);
-   void setVector(Coor start, Coor direction, vector <Block> vec);
-   void collapseDown();
-   bool isEmptyCol(int colIndex);
-   void emptyCol(int colIndex);
-   void collapseLeft();
-   void removeGroup(int groupNumber);
    void makeMove(Coor move);
 
 private:
@@ -47,6 +35,21 @@ private:
    int numColors_;
    Block** grid_;
    int numGroups_;
+   bool groupsUpToDate_;
+
+   bool isValidCoor(Coor coor);
+   Coor findNeighbour(Coor current, Coor direction);
+   void resetVisited(void);
+   void resetGroups(void);
+   Group calculateGroup(Coor start_search);
+   vector <Block> getVector(Coor start, Coor direction);
+   void setVector(Coor start, Coor direction, vector <Block> vec);
+   void collapseDown();
+   bool isEmptyCol(int colIndex);
+   void emptyCol(int colIndex);
+   void collapseLeft();
+   void removeGroup(int groupNumber);
+   bool hasWon(void);
 };
 
 

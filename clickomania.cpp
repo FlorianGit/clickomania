@@ -45,5 +45,6 @@ int main (void)
    grid.printGrid();
    grid.makeMove(Coor(0,2));
    grid.printGrid();
+   grid.makeMove(Coor(1,0));
    return 0;
 }

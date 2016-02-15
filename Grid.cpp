@@ -19,6 +19,7 @@ Grid::Grid(int numRows, int numCols, int numColors)
    numCols_ = numCols;
    numColors_ = numColors;
    numGroups_ = 0;
+   groupsUpToDate_ = false;
    grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
    for (int colIndex = 0; colIndex < numCols_; colIndex++)
    {
@@ -112,6 +113,7 @@ void Grid::resetGroups(void)
       for(int j = 0; j < getNumCols(); j++)
          setGroupNumber(Coor(i,j), -1);
    numGroups_ = 0;
+   groupsUpToDate_ = false;
 }
 
 Group Grid::calculateGroup(Coor searchStart)
@@ -151,15 +153,21 @@ Group Grid::calculateGroup(Coor searchStart)
 
 void Grid::calculateGroups()
 {
-   resetGroups();
-   resetVisited();
-   for( int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+   if(!groupsUpToDate_)
    {
-      for (int colIndex = 0; colIndex < numCols_; colIndex++)
+      resetGroups();
+      resetVisited();
+      for( int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
-         if (getVisited(Coor(rowIndex, colIndex)) == false)
-            calculateGroup(Coor(rowIndex, colIndex));
+         for (int colIndex = 0; colIndex < numCols_; colIndex++)
+         {
+            if ( getVisited(Coor(rowIndex, colIndex)) == false
+              && getValue(Coor(rowIndex, colIndex)) != ' '
+               )
+               calculateGroup(Coor(rowIndex, colIndex));
+         }
       }
+      groupsUpToDate_ = true;
    }
 }
 
@@ -182,6 +190,7 @@ void Grid::setVector(Coor start, Coor direction, vector <Block> vec)
       setBlock(start, vec[i]);
       start = start + direction;
    }
+   groupsUpToDate_ = false;
 }
 
 void Grid::collapseDown()
@@ -190,6 +199,7 @@ void Grid::collapseDown()
    {
       setVector(Coor(getNumRows()-1,i), UP, vectorMove(getVector(Coor(getNumRows()-1,i),UP)));
    }
+   groupsUpToDate_ = false;
 }
 
 bool Grid::isEmptyCol(int colIndex)
@@ -213,6 +223,7 @@ void Grid::emptyCol(int colIndex)
    {
       setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
    }
+   groupsUpToDate_ = false;
 }
 
 void Grid::collapseLeft()
@@ -238,6 +249,7 @@ void Grid::collapseLeft()
       }
       i++;
    }
+   groupsUpToDate_ = false;
 }
 
 void Grid::removeGroup(int groupNumber)
@@ -253,6 +265,25 @@ void Grid::removeGroup(int groupNumber)
          }
       }
    }
+   groupsUpToDate_ = false;
+}
+
+bool Grid::hasWon(void)
+{
+   bool ret = true;
+   for(int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
+   {
+      for(int colIndex = 0; colIndex < getNumCols(); colIndex++)
+      {
+         if (getValue(Coor(rowIndex, colIndex))!=' ')
+         {
+            ret = false;
+            goto exit;
+         }
+      }
+   }
+exit:
+   return ret;
 }
 
 void Grid::makeMove(Coor move)
@@ -261,4 +292,7 @@ void Grid::makeMove(Coor move)
    removeGroup(getGroupNumber(move));
    collapseDown();
    collapseLeft();
+   calculateGroups();
+   if (hasWon())
+      cout << "Congratulations! You have won the game!\n";
 }
