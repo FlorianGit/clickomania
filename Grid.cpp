@@ -99,6 +99,20 @@ Coor Grid::findNeighbour(Coor current, Coor direction)
       return current;
 }
 
+void Grid::resetVisited(void)
+{
+   for(int i = 0; i < getNumRows(); i++)
+      for(int j = 0; j < getNumCols(); j++)
+         setVisited(Coor(i,j), false);
+}
+
+void Grid::resetGroups(void)
+{
+   for(int i = 0; i < getNumRows(); i++)
+      for(int j = 0; j < getNumCols(); j++)
+         setGroupNumber(Coor(i,j), -1);
+   numGroups_ = 0;
+}
 
 Group Grid::calculateGroup(Coor searchStart)
 {
@@ -137,6 +151,8 @@ Group Grid::calculateGroup(Coor searchStart)
 
 void Grid::calculateGroups()
 {
+   resetGroups();
+   resetVisited();
    for( int rowIndex = 0; rowIndex < numRows_; rowIndex++)
    {
       for (int colIndex = 0; colIndex < numCols_; colIndex++)
@@ -237,4 +253,12 @@ void Grid::removeGroup(int groupNumber)
          }
       }
    }
+}
+
+void Grid::makeMove(Coor move)
+{
+   calculateGroups();
+   removeGroup(getGroupNumber(move));
+   collapseDown();
+   collapseLeft();
 }

@@ -28,6 +28,8 @@ public:
    void printGrid(void);
    bool isValidCoor(Coor coor);
    Coor findNeighbour(Coor current, Coor direction);
+   void resetVisited(void);
+   void resetGroups(void);
    Group calculateGroup(Coor start_search);
    void calculateGroups();
    vector <Block> getVector(Coor start, Coor direction);
@@ -37,6 +39,7 @@ public:
    void emptyCol(int colIndex);
    void collapseLeft();
    void removeGroup(int groupNumber);
+   void makeMove(Coor move);
 
 private:
    int numRows_;

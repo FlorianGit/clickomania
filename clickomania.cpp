@@ -41,11 +41,9 @@ int main (void)
    Grid grid = readGridFromFile("ex2.grd");
    grid.calculateGroups();
    grid.printGrid();
-   grid.removeGroup(1);
+   grid.makeMove(Coor(0,6));
    grid.printGrid();
-   grid.collapseDown();
-   grid.printGrid();
-   grid.collapseLeft();
+   grid.makeMove(Coor(0,2));
    grid.printGrid();
    return 0;
 }
