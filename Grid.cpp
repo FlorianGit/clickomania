@@ -296,3 +296,27 @@ void Grid::makeMove(Coor move)
    if (hasWon())
       cout << "Congratulations! You have won the game!\n";
 }
+
+vector <Coor> Grid::getPossibleMoves(void)
+{
+   vector <Coor> ret = {};
+   bool* groupsRepresented;
+
+   groupsRepresented = (bool*)malloc(getNumGroups() * sizeof(bool));
+   for (int i = 0; i < getNumGroups(); i++)
+      groupsRepresented[i] = false;
+   calculateGroups();
+   for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
+   {
+      for (int colIndex = 0; colIndex < getNumCols(); colIndex++)
+      {
+         if(!groupsRepresented[getGroupNumber(Coor(rowIndex, colIndex))])
+         {
+            groupsRepresented[getGroupNumber(Coor(rowIndex, colIndex))]= true;
+            ret.push_back(Coor(rowIndex, colIndex));
+         }
+      }
+   }
+   free(groupsRepresented);
+   return ret;
+}

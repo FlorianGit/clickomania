@@ -41,10 +41,8 @@ int main (void)
    Grid grid = readGridFromFile("ex2.grd");
    grid.calculateGroups();
    grid.printGrid();
-   grid.makeMove(Coor(0,6));
-   grid.printGrid();
-   grid.makeMove(Coor(0,2));
-   grid.printGrid();
-   grid.makeMove(Coor(1,0));
+   vector <Coor> tmp = grid.getPossibleMoves();
+   for (int i = 0; i < tmp.size(); i++)
+      cout << tmp[i];
    return 0;
 }

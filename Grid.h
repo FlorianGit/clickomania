@@ -28,6 +28,7 @@ public:
    void printGrid(void);
    void calculateGroups();
    void makeMove(Coor move);
+   vector <Coor> getPossibleMoves(void);
 
 private:
    int numRows_;
