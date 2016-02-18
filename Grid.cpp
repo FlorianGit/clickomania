@@ -297,7 +297,7 @@ void Grid::makeMove(Coor move)
       cout << "Congratulations! You have won the game!\n";
 }
 
-vector <Coor> Grid::getPossibleMoves(void)
+vector <Coor> Grid::findPossibleMoves(void)
 {
    vector <Coor> ret = {};
    bool* groupsRepresented;

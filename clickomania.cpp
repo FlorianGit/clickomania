@@ -41,7 +41,7 @@ int main (void)
    Grid grid = readGridFromFile("ex2.grd");
    grid.calculateGroups();
    grid.printGrid();
-   vector <Coor> tmp = grid.getPossibleMoves();
+   vector <Coor> tmp = grid.findPossibleMoves();
    for (int i = 0; i < tmp.size(); i++)
       cout << tmp[i];
    return 0;
