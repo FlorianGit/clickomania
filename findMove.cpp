@@ -5,7 +5,7 @@
 
 int calculateScore(Grid grid)
 {
-   return grid.getNumGroups();
+   return grid.findPossibleMoves().size();
 }
 
 Coor greedyFindBestMove(const Grid& grid)

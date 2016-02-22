@@ -9,6 +9,7 @@ class Grid {
 public:
    //Constructors
    Grid(int numRows, int numCols, int numColors);
+   Grid(string fileName);
    Grid(const Grid& grid);
    ~Grid(void);
 
@@ -26,7 +27,7 @@ public:
    int getNumColors(void) const { return numColors_; }
    int getNumGroups(void) const { return numGroups_; }
    //other functions
-   void printGrid(void) const ;
+   void printGrid(bool showColors, bool showVisited, bool showGroups) const ;
    void calculateGroups();
    void makeMove(Coor move);
    vector <Coor> findPossibleMoves(void) const;

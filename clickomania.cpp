@@ -12,44 +12,18 @@
 
 using namespace std;
 
-Grid readGridFromFile(string fileName)
-{
-   ifstream gridFile;
-   int numRows, numCols, numColors;
-   char temp;
-
-   gridFile.open(fileName, ifstream::in);
-   gridFile >> numRows;
-   gridFile >> numCols;
-   gridFile >> numColors;
-   Grid grid = Grid(numRows, numCols, numColors);
-   for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
-   {
-      for(int Colindex = 0; Colindex < numCols; Colindex++)
-      {
-         gridFile >> temp;
-         grid.setValue(Coor(rowIndex,Colindex), temp);
-      }
-   }
-   grid.calculateGroups();
-   gridFile.close();
-
-   return grid;
-}
-
 int main (void)
 {
    Coor c;
 
-   Grid grid = readGridFromFile("ex2.grd");
-   grid.calculateGroups();
+   Grid grid("ex1.grd");
    while (!grid.isFinished())
    {
       grid.calculateGroups();
-      grid.printGrid();
+      grid.printGrid(true, false, false);
       c = greedyFindBestMove(grid);
       grid.makeMove(c);
    }
-   grid.printGrid();
+   grid.printGrid(true, false, false);
    return 0;
 }
