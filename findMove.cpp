@@ -1,24 +1,26 @@
 
+#include <stdio.h>
+
 #include "Grid.h"
 
 int calculateScore(Grid grid)
 {
-   grid.calculateGroups();
    return grid.getNumGroups();
 }
 
-Coor greedyFindBestMove(Grid grid)
+Coor greedyFindBestMove(const Grid& grid)
 {
    vector <Coor> moves;
    int i, numMoves, minScore, tmpScore, minMoveIndex;
-   Grid temp = Grid(grid.getNumRows(), grid.getNumCols(), grid.getNumColors());
    Coor minMove;
 
    moves = grid.findPossibleMoves();
    numMoves = moves.size();
+   moves[0];
+   moves[1];
    for ( i = 0; i < numMoves; i++)
    {
-      temp = grid;
+      Grid temp = grid;
       temp.makeMove(moves[i]);
       tmpScore = calculateScore(temp);
       if (minScore < tmpScore)

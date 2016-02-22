@@ -33,6 +33,28 @@ Grid::Grid(int numRows, int numCols, int numColors)
    }
 }
 
+Grid::Grid(const Grid& grid)
+{
+   numRows_ = grid.getNumRows();
+   numCols_ = grid.getNumCols();
+   numColors_ = grid.getNumColors();
+   numGroups_ = grid.getNumGroups();
+   groupsUpToDate_ = grid.groupsUpToDate_;
+   groups_ = grid.groups_;
+   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
+   for (int colIndex = 0; colIndex <numCols_; colIndex++)
+   {
+      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
+      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+      {
+         setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
+         setValue(Coor(rowIndex, colIndex), grid.getValue(Coor(rowIndex, colIndex)));
+         setVisited(Coor(rowIndex, colIndex), grid.getVisited(Coor(rowIndex, colIndex)));
+         setGroupNumber(Coor(rowIndex, colIndex), grid.getGroupNumber(Coor(rowIndex, colIndex)));
+      }
+   }
+}
+
 Grid::~Grid(void)
 {
    for(int colIndex = 0; colIndex < numCols_; colIndex++){
@@ -41,7 +63,7 @@ Grid::~Grid(void)
    free(grid_);
 }
 
-void Grid::printGrid(void)
+void Grid::printGrid(void) const
 {
    cout << "Number of rows: " << getNumRows() << "\n";
    cout << "Number of cols: " << getNumCols() << "\n";
@@ -109,6 +131,7 @@ void Grid::resetVisited(void)
 
 void Grid::resetGroups(void)
 {
+   groups_ = {};
    for(int i = 0; i < getNumRows(); i++)
       for(int j = 0; j < getNumCols(); j++)
          setGroupNumber(Coor(i,j), -1);
@@ -148,6 +171,7 @@ Group Grid::calculateGroup(Coor searchStart)
          }
       }
    }
+   groups_.push_back(group);
    return group;
 }
 
@@ -268,7 +292,7 @@ void Grid::removeGroup(int groupNumber)
    groupsUpToDate_ = false;
 }
 
-bool Grid::hasWon(void)
+bool Grid::hasWon(void) const
 {
    bool ret = true;
    for(int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
@@ -288,35 +312,25 @@ exit:
 
 void Grid::makeMove(Coor move)
 {
-   calculateGroups();
    removeGroup(getGroupNumber(move));
    collapseDown();
    collapseLeft();
    calculateGroups();
-   if (hasWon())
-      cout << "Congratulations! You have won the game!\n";
 }
 
-vector <Coor> Grid::findPossibleMoves(void)
+vector <Coor> Grid::findPossibleMoves(void) const
 {
    vector <Coor> ret = {};
-   bool* groupsRepresented;
 
-   groupsRepresented = (bool*)malloc(getNumGroups() * sizeof(bool));
    for (int i = 0; i < getNumGroups(); i++)
-      groupsRepresented[i] = false;
-   calculateGroups();
-   for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
    {
-      for (int colIndex = 0; colIndex < getNumCols(); colIndex++)
-      {
-         if(!groupsRepresented[getGroupNumber(Coor(rowIndex, colIndex))])
-         {
-            groupsRepresented[getGroupNumber(Coor(rowIndex, colIndex))]= true;
-            ret.push_back(Coor(rowIndex, colIndex));
-         }
-      }
+      if (groups_[i].size > 1)
+         ret.push_back(groups_[i].coors.at(0));
    }
-   free(groupsRepresented);
    return ret;
+}
+
+bool Grid::isFinished(void)
+{
+   return (findPossibleMoves().size() == 0);
 }

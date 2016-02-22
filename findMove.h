@@ -4,6 +4,6 @@
 #include "Grid.h"
 
 int calculateScore(Grid grid);
-Coor greedyFindBestMove(Grid grid);
+Coor greedyFindBestMove(const Grid& grid);
 
 #endif

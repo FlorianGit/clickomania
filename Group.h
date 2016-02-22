@@ -12,7 +12,6 @@ public:
    int size;
    char color;
    int number;
-
 };
 
 

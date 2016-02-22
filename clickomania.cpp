@@ -8,6 +8,7 @@
 #include "Coor.h"
 #include "Grid.h"
 #include "helper.h"
+#include "findMove.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ Grid readGridFromFile(string fileName)
          grid.setValue(Coor(rowIndex,Colindex), temp);
       }
    }
-
+   grid.calculateGroups();
    gridFile.close();
 
    return grid;
@@ -38,11 +39,17 @@ Grid readGridFromFile(string fileName)
 
 int main (void)
 {
+   Coor c;
+
    Grid grid = readGridFromFile("ex2.grd");
    grid.calculateGroups();
+   while (!grid.isFinished())
+   {
+      grid.calculateGroups();
+      grid.printGrid();
+      c = greedyFindBestMove(grid);
+      grid.makeMove(c);
+   }
    grid.printGrid();
-   vector <Coor> tmp = grid.findPossibleMoves();
-   for (int i = 0; i < tmp.size(); i++)
-      cout << tmp[i];
    return 0;
 }
