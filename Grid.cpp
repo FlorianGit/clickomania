@@ -13,6 +13,14 @@
 
 using namespace std;
 
+const string red("\033[0;31m");
+const string green("\033[1;32m");
+const string yellow("\033[1;33m");
+const string blue("\033[1;34m");
+const string magenta("\033[0;35m");
+const string cyan("\033[0;36m");
+const string reset("\033[0m");
+
 Grid::Grid(int numRows, int numCols, int numColors)
 {
    numRows_ = numRows;
@@ -91,19 +99,46 @@ Grid::~Grid(void)
 
 void Grid::printGrid(bool showColors, bool showVisited, bool showGroups) const
 {
+	char ch;
+	
    cout << "Number of rows: " << getNumRows() << "\n";
    cout << "Number of cols: " << getNumCols() << "\n";
    cout << "Number of groups: " << getNumGroups() << "\n";
    if (showColors)
    cout << "Colors:\n";
    {
-	   for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
-	   {
-	      for (int colIndex = 0; colIndex < numCols_; colIndex++) {
-		 cout << getValue(Coor(rowIndex, colIndex));
-	      }
-	      cout << "\n";
-	   }
+      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+      {
+         for (int colIndex = 0; colIndex < numCols_; colIndex++)
+         {
+            ch = getValue(Coor(rowIndex, colIndex));
+            switch(ch)
+            {
+               case 'R':
+                  cout << red << "R" << reset;
+                  break;
+               case 'B':
+                  cout << blue << "B" << reset;
+                  break;
+               case 'V':
+                  cout << cyan << "V" << reset;
+                  break;
+               case 'Y':
+                  cout << yellow << "Y" << reset;
+                  break;
+               case 'G':
+                  cout << green << "G" << reset;
+                  break;
+               case 'O':
+                  cout << magenta << "O" << reset;
+                  break;
+               case 'I':
+                  cout << "I";
+                  break;
+            }
+         }
+         cout << "\n";
+      }
    }
    if (showVisited)
    {
