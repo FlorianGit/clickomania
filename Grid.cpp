@@ -143,6 +143,9 @@ void Grid::printGrid(bool showColors, bool showVisited, bool showGroups) const
                case 'I':
                   cout << "I";
                   break;
+               case ' ':
+                  cout << " ";
+                  break;
             }
          }
          cout << "\n";
@@ -254,7 +257,7 @@ Group Grid::calculateGroup(Coor searchStart)
 
 void Grid::calculateGroups()
 {
-   if(!groupsUpToDate_)
+   if(groupsUpToDate_ != true)
    {
       resetGroups();
       resetVisited();
@@ -361,9 +364,7 @@ void Grid::removeGroup(int groupNumber)
       {
          if (getGroupNumber(Coor(rowIndex,colIndex)) == groupNumber)
          {
-            setValue(Coor(rowIndex,colIndex), ' ');
-            setGroupNumber(Coor(rowIndex,colIndex), -1);
-            setVisited(Coor(rowIndex, colIndex), false);
+            setBlock(Coor(rowIndex,colIndex), EMPTY_BLOCK);
          }
       }
    }
