@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stack>
 #include <iomanip>
+#include <time.h>
 
 #include "Coor.h"
 #include "Grid.h"
@@ -21,8 +22,13 @@ const string magenta("\033[0;35m");
 const string cyan("\033[0;36m");
 const string reset("\033[0m");
 
+char colors[7] = { 'R', 'B', 'V', 'Y', 'G', 'O', 'I' };
+
 Grid::Grid(int numRows, int numCols, int numColors)
 {
+   short tmp;
+
+   srand(time(NULL));
    numRows_ = numRows;
    numCols_ = numCols;
    numColors_ = numColors;
@@ -34,11 +40,13 @@ Grid::Grid(int numRows, int numCols, int numColors)
       grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
       for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
-         setValue(Coor(rowIndex,colIndex), ' ');
+         tmp = rand() % numColors_;
+         setValue(Coor(rowIndex,colIndex), colors[tmp]);
          setVisited(Coor(rowIndex,colIndex), false);
          setGroupNumber(Coor(rowIndex,colIndex), -1);
       }
    }
+   calculateGroups();
 }
 
 Grid::Grid(const Grid& grid)
@@ -355,6 +363,7 @@ void Grid::removeGroup(int groupNumber)
          {
             setValue(Coor(rowIndex,colIndex), ' ');
             setGroupNumber(Coor(rowIndex,colIndex), -1);
+            setVisited(Coor(rowIndex, colIndex), false);
          }
       }
    }
