@@ -26,6 +26,8 @@ public:
    int getNumCols(void) const { return numCols_; }
    int getNumColors(void) const { return numColors_; }
    int getNumGroups(void) const { return numGroups_; }
+   int getGroupSize(int groupNumber) const { return groups_[groupNumber].size; }
+
    //other functions
    void printGrid(bool showColors, bool showVisited, bool showGroups) const ;
    void calculateGroups();
