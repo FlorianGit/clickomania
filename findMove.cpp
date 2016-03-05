@@ -22,7 +22,7 @@ float calculateAverageGroupSize(Grid grid)
    {
       totalSize += grid.getGroupSize(i);
    }
-   return totalSize/(float)numGroups;
+   return (float)totalSize/(float)numGroups;
 }
 
 int calculateNumSingletons(Grid grid)
@@ -47,8 +47,6 @@ Coor greedyFindBestMove(const Grid& grid)
 
    moves = grid.findPossibleMoves();
    numMoves = moves.size();
-   moves[0];
-   moves[1];
    for ( i = 0; i < numMoves; i++)
    {
       Grid temp = grid;
@@ -65,3 +63,34 @@ Coor greedyFindBestMove(const Grid& grid)
    }
    return moves[minMoveIndex];
 }
+
+Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
+{
+   vector <Coor> moves;
+   int i, numMoves, minMoveIndex;
+   float minScore, tmpScore;
+   Coor minMove;
+
+   moves = grid.findPossibleMoves();
+   numMoves = moves.size();
+   if (numMoves == 0)
+      return Coor(0,0);
+   for ( i = 0; i < numMoves; i++)
+   {
+      Grid temp = grid;
+      temp.makeMove(moves[i]);
+      if (searchDepth > 1)
+         temp.makeMove(findBestMoveWithSearchDepth(temp, searchDepth -1));
+      //tmpScore = calculateNumPossibleMoves(temp);
+      //tmpScore = calculateNumGroups(temp);
+      tmpScore = calculateAverageGroupSize(temp);
+      //tmpScore = calculateNumSingletons(temp);
+      if (minScore < tmpScore)
+      {
+         minScore = tmpScore;
+         minMoveIndex = i;
+      }
+   }
+   return moves[minMoveIndex];
+}
+

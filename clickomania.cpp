@@ -19,12 +19,19 @@ int main (void)
    char tmp[25];
    bool exit = false;
    int x,y; 
-   Grid grid(20,20,5);
+   Grid grid(20,10,5);
    grid.calculateGroups();
    while (!grid.isFinished())
    {
       grid.printGrid(true, false, false);
-      c = greedyFindBestMove(grid);
+      int numMoves = grid.findPossibleMoves().size();
+      if (numMoves < 10)
+         c = findBestMoveWithSearchDepth(grid, 3);
+      else if (numMoves < 30)
+         c = findBestMoveWithSearchDepth(grid, 1);
+      else 
+         c = findBestMoveWithSearchDepth(grid, 1);
+      
       grid.makeMove(c);
       grid.calculateGroups();
    }

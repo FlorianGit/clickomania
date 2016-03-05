@@ -391,6 +391,8 @@ exit:
 
 void Grid::makeMove(Coor move)
 {
+   if (getValue(move)==' ')
+     return; 
    removeGroup(getGroupNumber(move));
    collapseDown();
    collapseLeft();

@@ -5,5 +5,5 @@
 
 int calculateScore(Grid grid);
 Coor greedyFindBestMove(const Grid& grid);
-
+Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth);
 #endif
