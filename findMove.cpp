@@ -2,14 +2,85 @@
 #include <stdio.h>
 #include <limits.h>
 
+#include "findMove.h"
 #include "Grid.h"
 
-int calculateNumPossibleMoves(Grid grid)
+//------------------------------------------------------------------------
+//-----------------Private Declarations-----------------------------------
+//------------------------------------------------------------------------
+
+float (*calculateScoreFunc)(Grid grid) = NULL;
+
+float calculateNumPossibleMoves(Grid grid);
+float calculateNumGroups(Grid grid);
+float calculateAverageGroupSize(Grid grid);
+float calculateNumSingletons(Grid grid);
+
+//------------------------------------------------------------------------
+//-----------------Public definitions-------------------------------------
+//------------------------------------------------------------------------
+
+extern void setStrategy(int strategy)
+{
+   switch (strategy)
+   {
+      case MINIMIZE_NUM_POSSIBLE_MOVES:
+         calculateScoreFunc = calculateNumPossibleMoves;
+         break;
+      case MINIMIZE_NUM_GROUPS:
+         calculateScoreFunc = calculateNumGroups;
+         break;
+      case MINIMIZE_AVG_GROUP_SIZE:
+         calculateScoreFunc = calculateAverageGroupSize;
+         break;
+      case MINIMIZE_NUM_SINGLETONS:
+         calculateScoreFunc = calculateNumSingletons;
+         break;
+      default:
+         calculateScoreFunc = calculateAverageGroupSize;
+   }
+}   
+
+extern Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
+{
+   vector <Coor> moves;
+   int i, numMoves, minMoveIndex;
+   float minScore = INT_MAX, tmpScore;
+   Coor minMove;
+
+   if (calculateScoreFunc == NULL)
+      setStrategy(2);
+
+   moves = grid.findPossibleMoves();
+   numMoves = moves.size();
+   if (numMoves == 0)
+      return Coor(0,0);
+   for ( i = 0; i < numMoves; i++)
+   {
+      Grid temp = grid;
+      temp.makeMove(moves[i]);
+      if (searchDepth > 1)
+         temp.makeMove(findBestMoveWithSearchDepth(temp, searchDepth -1));
+      tmpScore = calculateScoreFunc(temp);
+      if (tmpScore < minScore)
+      {
+         minScore = tmpScore;
+         minMoveIndex = i;
+      }
+   }
+   return moves[minMoveIndex];
+}
+
+//------------------------------------------------------------------------
+//-----------------Private functions--------------------------------------
+//------------------------------------------------------------------------
+
+float calculateNumPossibleMoves(Grid grid)
 {
    return grid.findPossibleMoves().size();
 }
 
-int calculateNumGroups(Grid grid)
+float calculateNumGroups(Grid grid)
 {
    return grid.getNumGroups();
 }
@@ -26,7 +97,7 @@ float calculateAverageGroupSize(Grid grid)
    return -(float)totalSize/(float)numGroups;
 }
 
-int calculateNumSingletons(Grid grid)
+float calculateNumSingletons(Grid grid)
 {
    int numSingletons = 0;
    int numGroups = grid.getNumGroups();
@@ -39,59 +110,3 @@ int calculateNumSingletons(Grid grid)
    return numSingletons;
 }
    
-Coor greedyFindBestMove(const Grid& grid)
-{
-   vector <Coor> moves;
-   int i, numMoves, minMoveIndex;
-   float minScore = INT_MAX, tmpScore;
-   Coor minMove;
-
-   moves = grid.findPossibleMoves();
-   numMoves = moves.size();
-   for ( i = 0; i < numMoves; i++)
-   {
-      Grid temp = grid;
-      temp.makeMove(moves[i]);
-      //tmpScore = calculateNumPossibleMoves(temp);
-      //tmpScore = calculateNumGroups(temp);
-      tmpScore = calculateAverageGroupSize(temp);
-      //tmpScore = calculateNumSingletons(temp);
-      if (tmpScore < minScore)
-      {
-         minScore = tmpScore;
-         minMoveIndex = i;
-      }
-   }
-   return moves[minMoveIndex];
-}
-
-Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
-{
-   vector <Coor> moves;
-   int i, numMoves, minMoveIndex;
-   float minScore = INT_MAX, tmpScore;
-   Coor minMove;
-
-   moves = grid.findPossibleMoves();
-   numMoves = moves.size();
-   if (numMoves == 0)
-      return Coor(0,0);
-   for ( i = 0; i < numMoves; i++)
-   {
-      Grid temp = grid;
-      temp.makeMove(moves[i]);
-      if (searchDepth > 1)
-         temp.makeMove(findBestMoveWithSearchDepth(temp, searchDepth -1));
-      //tmpScore = calculateNumPossibleMoves(temp);
-      //tmpScore = calculateNumGroups(temp);
-      tmpScore = calculateAverageGroupSize(temp);
-      //tmpScore = calculateNumSingletons(temp);
-      if (tmpScore < minScore)
-      {
-         minScore = tmpScore;
-         minMoveIndex = i;
-      }
-   }
-   return moves[minMoveIndex];
-}
-
