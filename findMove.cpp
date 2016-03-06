@@ -55,6 +55,7 @@ extern Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
    numMoves = moves.size();
    if (numMoves == 0)
       return Coor(0,0);
+   minMoveIndex = 0;
    for ( i = 0; i < numMoves; i++)
    {
       Grid temp = grid;

@@ -1,6 +1,6 @@
 CXX = g++
 
-objects = Coor.o Grid.o helper.o findMove.o
+objects = Coor.o Grid.o helper.o findMove.o testSolver.o
 
 clickomania : $(objects)
 	$(CXX) -std=c++11 -g clickomania.cpp $(objects) Block.h Group.h
@@ -16,3 +16,6 @@ helper.o : helper.cpp
 
 findMove.o : findMove.cpp
 	$(CXX) -std=c++11 -c -ggdb findMove.cpp findMove.h
+
+testSolver.o : testSolver.cpp
+	$(CXX) -std=c++11 -c -ggdb testSolver.cpp testSolver.h findMove.h Grid.h Coor.h

@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <time.h>
 
 #include "Coor.h"
 #include "Grid.h"
 #include "helper.h"
 #include "findMove.h"
+#include "testSolver.h"
 
 using namespace std;
 
@@ -38,7 +40,9 @@ void readCommandFromInput(Grid grid)
 }
 int main (void)
 {
-   Coor c;
+   srand(time(NULL));
+   testSolver();
+   /*Coor c;
    Grid grid(20,10,5);
    
    while (!grid.isFinished())
@@ -55,6 +59,6 @@ int main (void)
       grid.makeMove(c);
       grid.calculateGroups();
    }
-   grid.printGrid(true, false, false);
+   grid.printGrid(true, false, false);*/
    return 0;
 }

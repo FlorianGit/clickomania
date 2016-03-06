@@ -5,7 +5,6 @@
 #include <iostream>
 #include <stack>
 #include <iomanip>
-#include <time.h>
 
 #include "Coor.h"
 #include "Grid.h"
@@ -28,7 +27,6 @@ Grid::Grid(int numRows, int numCols, int numColors)
 {
    short tmp;
 
-   srand(time(NULL));
    numRows_ = numRows;
    numCols_ = numCols;
    numColors_ = numColors;
