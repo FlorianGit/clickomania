@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <limits.h>
 
 #include "Grid.h"
 
@@ -22,7 +23,7 @@ float calculateAverageGroupSize(Grid grid)
    {
       totalSize += grid.getGroupSize(i);
    }
-   return (float)totalSize/(float)numGroups;
+   return -(float)totalSize/(float)numGroups;
 }
 
 int calculateNumSingletons(Grid grid)
@@ -42,7 +43,7 @@ Coor greedyFindBestMove(const Grid& grid)
 {
    vector <Coor> moves;
    int i, numMoves, minMoveIndex;
-   float minScore, tmpScore;
+   float minScore = INT_MAX, tmpScore;
    Coor minMove;
 
    moves = grid.findPossibleMoves();
@@ -55,7 +56,7 @@ Coor greedyFindBestMove(const Grid& grid)
       //tmpScore = calculateNumGroups(temp);
       tmpScore = calculateAverageGroupSize(temp);
       //tmpScore = calculateNumSingletons(temp);
-      if (minScore < tmpScore)
+      if (tmpScore < minScore)
       {
          minScore = tmpScore;
          minMoveIndex = i;
@@ -68,7 +69,7 @@ Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
 {
    vector <Coor> moves;
    int i, numMoves, minMoveIndex;
-   float minScore, tmpScore;
+   float minScore = INT_MAX, tmpScore;
    Coor minMove;
 
    moves = grid.findPossibleMoves();
@@ -85,7 +86,7 @@ Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
       //tmpScore = calculateNumGroups(temp);
       tmpScore = calculateAverageGroupSize(temp);
       //tmpScore = calculateNumSingletons(temp);
-      if (minScore < tmpScore)
+      if (tmpScore < minScore)
       {
          minScore = tmpScore;
          minMoveIndex = i;

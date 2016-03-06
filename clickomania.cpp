@@ -17,6 +17,7 @@ void readCommandFromInput(Grid grid)
 {
    bool exit = false;
    char tmp[25];
+   int x,y; 
    
    while (!exit)
    {
@@ -39,7 +40,6 @@ int main (void)
 {
    Coor c;
    bool exit = false;
-   int x,y; 
    Grid grid(20,10,5);
    
    while (!grid.isFinished())
