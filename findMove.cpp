@@ -16,6 +16,7 @@ float calculateNumGroups(Grid grid);
 float calculateAverageGroupSize(Grid grid);
 float calculateNumSingletons(Grid grid);
 float calculateMaxDiffBetweenStacks(Grid grid);
+float calculateAvgDiffBetweenStacks(Grid grid);
 
 //------------------------------------------------------------------------
 //-----------------Public definitions-------------------------------------
@@ -39,6 +40,10 @@ extern void setStrategy(int strategy)
          break;
       case MINIMIZE_MAX_STACK_HEIGHT_DIFF:
          calculateScoreFunc = calculateMaxDiffBetweenStacks;
+         break;
+      case MINIMIZE_AVG_STACK_HEIGHT_DIFF:
+         calculateScoreFunc = calculateAvgDiffBetweenStacks;
+         break; 
       default:
          calculateScoreFunc = calculateAverageGroupSize;
    }
@@ -127,3 +132,18 @@ float calculateMaxDiffBetweenStacks(Grid grid)
    }
    return (float)maxDiff;
 }
+
+float calculateAvgDiffBetweenStacks(Grid grid)
+{
+   int totalDiff = 0, prevHeight, currHeight;
+
+   prevHeight = grid.getStackHeight(0); 
+   for (int i = 1; i < grid.getNumCols(); i++)
+   {
+      currHeight = grid.getStackHeight(1);
+      totalDiff = abs(currHeight - prevHeight);
+      prevHeight = currHeight;
+   }
+   return (float)totalDiff/(float)grid.getNumCols();
+}
+
