@@ -1,22 +1,35 @@
+#include <fstream>
+#include <time.h>
+
 #include "testSolver.h"
 #include "findMove.h"
 #include "Grid.h"
 #include "Coor.h"
 
+static ofstream logFile;
+
+static bool openLogFile(void);
+static bool closeLogFile(void);
+static void writeOutput(int strategy, int searchDepth, int numGroupsLeft, int movesMade, double elapsedTime);
+
 void testSolver(void)
 {
    Coor c;
    int numMoves, numGroupsLeft, totalMoves;
-   for (int searchDepth = 1; searchDepth < 4; searchDepth++)
+   clock_t begin, end;
+
+   openLogFile();
+
+   for (int searchDepth = 1; searchDepth <= 2; searchDepth++)
    {
       for (int strategy = 0; strategy < FINDMOVE_NUM_STRATEGIES; strategy++)
       {
          setStrategy(strategy);
-         numGroupsLeft = 0;
-         totalMoves = 0;
-         for (int i = 0; i < 100; i++)
+         for (int i = 0; i < 30; i++)
          {
-            Grid grid(10,10,2);
+            begin = clock();
+            totalMoves = 0;
+            Grid grid(20,10,5);
             while (!grid.isFinished())
             {
                numMoves = grid.findPossibleMoves().size();
@@ -29,9 +42,29 @@ void testSolver(void)
                totalMoves++;
                grid.calculateGroups();
             }
-            numGroupsLeft += grid.getNumGroups();
+            numGroupsLeft = grid.getNumGroups();
+            end = clock();
+            writeOutput(strategy, searchDepth, numGroupsLeft, totalMoves, (double)(end-begin)/CLOCKS_PER_SEC);
          }
-         printf("Strategynumber %d totalgroupsleft %d totalmovesmade: %d\n", strategy, numGroupsLeft, totalMoves);
       }
    }
-} 
+   closeLogFile();
+}
+
+static bool openLogFile(void)
+{
+   logFile.open("click.csv",ofstream::out);
+   logFile << "strategy" << "," << "searchDepth" << "," << "numGroupsleft" << "," << "movesMade" << "," << "elapsedTime" << "\n";
+
+   return true;
+}
+
+static bool closeLogFile(void)
+{
+   logFile.close();
+}
+
+static void writeOutput(int strategy, int searchDepth, int numGroupsLeft, int movesMade, double elapsedTime)
+{
+   logFile << strategy << "," << searchDepth << "," << numGroupsLeft << "," << movesMade << "," << elapsedTime << "\n";
+}
