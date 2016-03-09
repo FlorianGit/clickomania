@@ -36,6 +36,7 @@ public:
    Group calculateGroup(Coor start_search);
    bool hasWon(void) const;
    bool isFinished(void);
+   int getStackHeight(int colIndex);
 
 private:
    int numRows_;

@@ -15,6 +15,7 @@ float calculateNumPossibleMoves(Grid grid);
 float calculateNumGroups(Grid grid);
 float calculateAverageGroupSize(Grid grid);
 float calculateNumSingletons(Grid grid);
+float calculateMaxDiffBetweenStacks(Grid grid);
 
 //------------------------------------------------------------------------
 //-----------------Public definitions-------------------------------------
@@ -36,6 +37,8 @@ extern void setStrategy(int strategy)
       case MINIMIZE_NUM_SINGLETONS:
          calculateScoreFunc = calculateNumSingletons;
          break;
+      case MINIMIZE_MAX_STACK_HEIGHT_DIFF:
+         calculateScoreFunc = calculateMaxDiffBetweenStacks;
       default:
          calculateScoreFunc = calculateAverageGroupSize;
    }
@@ -49,7 +52,7 @@ extern Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
    Coor minMove;
 
    if (calculateScoreFunc == NULL)
-      setStrategy(2);
+      setStrategy(3);
 
    moves = grid.findPossibleMoves();
    numMoves = moves.size();
@@ -110,4 +113,17 @@ float calculateNumSingletons(Grid grid)
    }
    return numSingletons;
 }
-   
+ 
+float calculateMaxDiffBetweenStacks(Grid grid)
+{
+   int maxDiff = 0, prevHeight, currHeight;
+   prevHeight = grid.getStackHeight(0); 
+   for (int i = 1; i < grid.getNumCols(); i++)
+   {
+      currHeight = grid.getStackHeight(1);
+      if (abs(currHeight - prevHeight) > maxDiff)
+         maxDiff = abs(currHeight - prevHeight);
+      prevHeight = currHeight;
+   }
+   return (float)maxDiff;
+}

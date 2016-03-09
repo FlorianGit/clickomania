@@ -3,12 +3,13 @@
 
 #include "Grid.h"
 
-#define FINDMOVE_NUM_STRATEGIES         4
+#define FINDMOVE_NUM_STRATEGIES         5
 
 #define MINIMIZE_NUM_POSSIBLE_MOVES     0
 #define MINIMIZE_NUM_GROUPS             1
 #define MINIMIZE_AVG_GROUP_SIZE         2
 #define MINIMIZE_NUM_SINGLETONS         3
+#define MINIMIZE_MAX_STACK_HEIGHT_DIFF  4
 
 extern void setStrategy(int strategy);
 extern Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth);

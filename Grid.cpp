@@ -23,6 +23,9 @@ const string reset("\033[0m");
 
 char colors[7] = { 'R', 'B', 'V', 'Y', 'G', 'O', 'I' };
 
+//---------------------------------------------------------------------
+//------------------------Public functions-----------------------------
+//---------------------------------------------------------------------
 Grid::Grid(int numRows, int numCols, int numColors)
 {
    short tmp;
@@ -46,29 +49,6 @@ Grid::Grid(int numRows, int numCols, int numColors)
    }
    calculateGroups();
 }
-
-Grid::Grid(const Grid& grid)
-{
-   numRows_ = grid.getNumRows();
-   numCols_ = grid.getNumCols();
-   numColors_ = grid.getNumColors();
-   numGroups_ = grid.getNumGroups();
-   groupsUpToDate_ = grid.groupsUpToDate_;
-   groups_ = grid.groups_;
-   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
-   for (int colIndex = 0; colIndex <numCols_; colIndex++)
-   {
-      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
-      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
-      {
-         setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
-         setValue(Coor(rowIndex, colIndex), grid.getValue(Coor(rowIndex, colIndex)));
-         setVisited(Coor(rowIndex, colIndex), grid.getVisited(Coor(rowIndex, colIndex)));
-         setGroupNumber(Coor(rowIndex, colIndex), grid.getGroupNumber(Coor(rowIndex, colIndex)));
-      }
-   }
-}
-
 
 Grid::Grid(string fileName)
 {
@@ -95,12 +75,47 @@ Grid::Grid(string fileName)
    gridFile.close();
 }
 
+Grid::Grid(const Grid& grid)
+{
+   numRows_ = grid.getNumRows();
+   numCols_ = grid.getNumCols();
+   numColors_ = grid.getNumColors();
+   numGroups_ = grid.getNumGroups();
+   groupsUpToDate_ = grid.groupsUpToDate_;
+   groups_ = grid.groups_;
+   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
+   for (int colIndex = 0; colIndex <numCols_; colIndex++)
+   {
+      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
+      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+      {
+         setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
+         setValue(Coor(rowIndex, colIndex), grid.getValue(Coor(rowIndex, colIndex)));
+         setVisited(Coor(rowIndex, colIndex), grid.getVisited(Coor(rowIndex, colIndex)));
+         setGroupNumber(Coor(rowIndex, colIndex), grid.getGroupNumber(Coor(rowIndex, colIndex)));
+      }
+   }
+}
+
 Grid::~Grid(void)
 {
    for(int colIndex = 0; colIndex < numCols_; colIndex++){
       free(grid_[colIndex]);
    }
    free(grid_);
+}
+
+int Grid::getStackHeight(int colIndex)
+{
+   vector <Block> column;
+   
+   column = getVector(Coor(getNumRows(),colIndex), UP);
+   int i = 0;
+   while ( i < column.size()
+        && column[i].color != ' '
+         )
+      i++;
+   return i;
 }
 
 void Grid::printGrid(bool showColors, bool showVisited, bool showGroups) const
