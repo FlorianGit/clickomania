@@ -35,10 +35,11 @@ Grid::Grid(int numRows, int numCols, int numColors)
    numColors_ = numColors;
    numGroups_ = 0;
    groupsUpToDate_ = false;
-   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
+   valueGrid_ = (char*)malloc(numCols_ *  numRows_ * sizeof(char));
+   visitedGrid_ = (bool*)malloc(numCols_ *  numRows_ * sizeof(bool));
+   groupNumberGrid_ = (int*)malloc(numCols_ *  numRows_ * sizeof(int));
    for (int colIndex = 0; colIndex < numCols_; colIndex++)
    {
-      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
       for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
          tmp = rand() % numColors_;
@@ -61,9 +62,9 @@ Grid::Grid(string fileName)
    gridFile >> numColors_;
    numGroups_ = 0;
    groupsUpToDate_ = false;
-   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
-   for (int colIndex = 0; colIndex < numCols_; colIndex++)
-      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
+   valueGrid_ = (char*)malloc(numCols_ *  numRows_ * sizeof(char));
+   visitedGrid_ = (bool*)malloc(numCols_ *  numRows_ * sizeof(bool));
+   groupNumberGrid_ = (int*)malloc(numCols_ *  numRows_ * sizeof(int));
 
    for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
    {
@@ -89,9 +90,9 @@ Grid::Grid(void)
    cin >> numColors_;
    numGroups_ = 0;
    groupsUpToDate_ = false;
-   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
-   for (int colIndex = 0; colIndex < numCols_; colIndex++)
-      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
+   valueGrid_ = (char*)malloc(numCols_ *  numRows_ * sizeof(char));
+   visitedGrid_ = (bool*)malloc(numCols_ *  numRows_ * sizeof(bool));
+   groupNumberGrid_ = (int*)malloc(numCols_ *  numRows_ * sizeof(int));
    for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
    {
       for (int colIndex = 0; colIndex < numCols_; colIndex++)
@@ -114,13 +115,13 @@ Grid::Grid(const Grid& grid)
    numGroups_ = grid.getNumGroups();
    groupsUpToDate_ = grid.groupsUpToDate_;
    groups_ = grid.groups_;
-   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
+   valueGrid_ = (char*)malloc(numCols_ *  numRows_ * sizeof(char));
+   visitedGrid_ = (bool*)malloc(numCols_ *  numRows_ * sizeof(bool));
+   groupNumberGrid_ = (int*)malloc(numCols_ *  numRows_ * sizeof(int));
    for (int colIndex = 0; colIndex <numCols_; colIndex++)
    {
-      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
       for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
       {
-         setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
          setValue(Coor(rowIndex, colIndex), grid.getValue(Coor(rowIndex, colIndex)));
          setVisited(Coor(rowIndex, colIndex), grid.getVisited(Coor(rowIndex, colIndex)));
          setGroupNumber(Coor(rowIndex, colIndex), grid.getGroupNumber(Coor(rowIndex, colIndex)));
@@ -130,20 +131,19 @@ Grid::Grid(const Grid& grid)
 
 Grid::~Grid(void)
 {
-   for(int colIndex = 0; colIndex < numCols_; colIndex++){
-      free(grid_[colIndex]);
-   }
-   free(grid_);
+   free(valueGrid_);
+   free(visitedGrid_);
+   free(groupNumberGrid_);
 }
 
 int Grid::getStackHeight(int colIndex)
 {
-   vector <Block> column;
+   vector <char> column;
    
    column = getVector(Coor(getNumRows(),colIndex), UP);
    int i = 0;
    while ( i < column.size()
-        && column[i].color != ' '
+        && column[i] != ' '
          )
       i++;
    return i;
@@ -319,23 +319,23 @@ void Grid::calculateGroups()
    }
 }
 
-vector <Block> Grid::getVector(Coor start, Coor direction)
+vector <char> Grid::getVector(Coor start, Coor direction)
 {
-   vector <Block> ret = {};
+   vector <char> ret = {};
 
    while( isValidCoor(start) )
    {
-      ret.push_back(getBlock(start));
+      ret.push_back(getValue(start));
       start = start + direction;
    }
    return ret;
 }
 
-void Grid::setVector(Coor start, Coor direction, vector <Block> vec)
+void Grid::setVector(Coor start, Coor direction, vector <char> vec)
 {
    for (int i = 0; i < vec.size(); i++)
    {
-      setBlock(start, vec[i]);
+      setValue(start, vec[i]);
       start = start + direction;
    }
    groupsUpToDate_ = false;
@@ -369,7 +369,9 @@ void Grid::emptyCol(int colIndex)
 {
    for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
    {
-      setBlock(Coor(rowIndex, colIndex), EMPTY_BLOCK);
+      setVisited(Coor(rowIndex, colIndex), false);
+      setValue(Coor(rowIndex, colIndex), ' ');
+      setGroupNumber(Coor(rowIndex, colIndex), -1);
    }
    groupsUpToDate_ = false;
 }
@@ -408,7 +410,9 @@ void Grid::removeGroup(int groupNumber)
       {
          if (getGroupNumber(Coor(rowIndex,colIndex)) == groupNumber)
          {
-            setBlock(Coor(rowIndex,colIndex), EMPTY_BLOCK);
+            setVisited(Coor(rowIndex, colIndex), false); 
+            setValue(Coor(rowIndex, colIndex), ' ');
+            setGroupNumber(Coor(rowIndex, colIndex), -1);
          }
       }
    }
