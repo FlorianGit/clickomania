@@ -75,6 +75,8 @@ extern Coor findBestMoveWithSearchDepth(const Grid& grid, int searchDepth)
       {
          minScore = tmpScore;
          minMoveIndex = i;
+         if (minScore == 0)
+            break;
       }
    }
    return moves[minMoveIndex];
