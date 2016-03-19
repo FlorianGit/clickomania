@@ -63,16 +63,47 @@ Grid::Grid(string fileName)
    groupsUpToDate_ = false;
    grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
    for (int colIndex = 0; colIndex < numCols_; colIndex++)
-   {
       grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
-      for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+
+   for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+   {
+      for (int colIndex = 0; colIndex < numCols_; colIndex++)
       {
          gridFile >> temp;
-         setValue(Coor(rowIndex,colIndex), temp);
+         if (temp == '-')
+            setValue(Coor(rowIndex,colIndex), ' ');
+         else
+            setValue(Coor(rowIndex,colIndex), temp);
       }
    }
    calculateGroups();
    gridFile.close();
+}
+
+Grid::Grid(void)
+{
+   char temp;
+
+   cin >> numRows_;
+   cin >> numCols_;
+   cin >> numColors_;
+   numGroups_ = 0;
+   groupsUpToDate_ = false;
+   grid_ = (Block**)malloc(numCols_ * sizeof(Block*));
+   for (int colIndex = 0; colIndex < numCols_; colIndex++)
+      grid_[colIndex] = (Block*)malloc(numRows_ * sizeof(Block));
+   for (int rowIndex = 0; rowIndex < numRows_; rowIndex++)
+   {
+      for (int colIndex = 0; colIndex < numCols_; colIndex++)
+      {
+         cin >> temp;
+         if (temp == '-')
+            setValue(Coor(rowIndex,colIndex), ' ');
+         else
+            setValue(Coor(rowIndex,colIndex), temp);
+      }
+   }
+   calculateGroups();
 }
 
 Grid::Grid(const Grid& grid)

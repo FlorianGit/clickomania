@@ -10,6 +10,7 @@ public:
    //Constructors
    Grid(int numRows, int numCols, int numColors);
    Grid(string fileName);
+   Grid(void);
    Grid(const Grid& grid);
    ~Grid(void);
 
