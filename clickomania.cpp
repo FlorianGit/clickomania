@@ -9,7 +9,6 @@
 
 #include "Coor.h"
 #include "Grid.h"
-#include "helper.h"
 #include "findMove.h"
 #include "testSolver.h"
 
