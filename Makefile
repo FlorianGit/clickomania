@@ -16,3 +16,6 @@ findMove.o : findMove.cpp
 
 testSolver.o : testSolver.cpp
 	$(CXX) -std=c++11 -c -ggdb testSolver.cpp testSolver.h findMove.h Grid.h Coor.h
+
+singlefile :
+	cat Coor.h Block.h Group.h Grid.h findMove.h Coor.cpp Grid.cpp findMove.cpp clickomania.cpp > singlefile.cpp
