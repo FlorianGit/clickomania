@@ -137,15 +137,14 @@ Grid::~Grid(void)
 
 int Grid::getStackHeight(int colIndex)
 {
-   vector <char> column;
-   
-   column = getVector(Coor(getNumRows(),colIndex), UP);
-   int i = 0;
-   while ( i < column.size()
-        && column[i] != ' '
+   int rowIndex = getNumRows() - 1;
+
+   while ( rowIndex >= 0
+        && getValue(Coor(rowIndex, colIndex)) != ' '
          )
-      i++;
-   return i;
+      rowIndex--
+
+   return getNumRows() - rowIndex + 1;
 }
 
 void Grid::printGrid(bool showColors, bool showVisited, bool showGroups) const
@@ -318,28 +317,6 @@ void Grid::calculateGroups()
    }
 }
 
-vector <char> Grid::getVector(Coor start, Coor direction)
-{
-   vector <char> ret = {};
-
-   while( isValidCoor(start) )
-   {
-      ret.push_back(getValue(start));
-      start = start + direction;
-   }
-   return ret;
-}
-
-void Grid::setVector(Coor start, Coor direction, vector <char> vec)
-{
-   for (int i = 0; i < vec.size(); i++)
-   {
-      setValue(start, vec[i]);
-      start = start + direction;
-   }
-   groupsUpToDate_ = false;
-}
-
 void Grid::collapseDown()
 {
    char temp;
@@ -406,7 +383,8 @@ void Grid::collapseLeft()
                j++;
             else
             {
-               setVector(Coor(0, i), DOWN, getVector(Coor(0, j), DOWN));
+               for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++)
+                  setValue(Coor(rowIndex, i), getValue(Coor(rowIndex, j)));
                emptyCol(j);
                j = getNumCols();
             }

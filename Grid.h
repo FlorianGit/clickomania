@@ -51,8 +51,6 @@ private:
    Coor findNeighbour(Coor current, Coor direction);
    void resetVisited(void);
    void resetGroups(void);
-   vector <char> getVector(Coor start, Coor direction);
-   void setVector(Coor start, Coor direction, vector <char> vec);
    void collapseDown();
    bool isEmptyCol(int colIndex);
    void emptyCol(int colIndex);
