@@ -3,7 +3,6 @@
 
 #include "Coor.h"
 #include "Group.h"
-#include "Block.h"
 
 class Grid {
 public:
